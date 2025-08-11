@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'features/onboarding/splash_screen.dart';
+import 'features/auth/google_auth_screen.dart';
 import 'features/coach/providers/chat_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         // Configuración de debug
         debugShowCheckedModeBanner: false,
         
-        home: const SplashScreen(),
+        home: const GoogleAuthScreen(),
       ),
     );
   }

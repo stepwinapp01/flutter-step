@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../onboarding/simple_welcome_screen.dart';
+import 'auth_service.dart';
 
 class GoogleAuthScreen extends StatelessWidget {
   const GoogleAuthScreen({super.key});
@@ -129,8 +130,7 @@ class GoogleAuthScreen extends StatelessWidget {
     );
   }
 
-  void _signInWithGoogle(BuildContext context) {
-    // Simulación de autenticación con Google
+  void _signInWithGoogle(BuildContext context) async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -141,15 +141,38 @@ class GoogleAuthScreen extends StatelessWidget {
       ),
     );
     
-    // Simular delay de autenticación
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pop(context); // Cerrar loading
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SimpleWelcomeScreen(),
-        ),
-      );
-    });
+    try {
+      final result = await AuthService.signInWithGoogle();
+      
+      if (context.mounted) {
+        Navigator.pop(context);
+        
+        if (result != null && result['success'] == true) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SimpleWelcomeScreen(language: 'es'),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error al iniciar sesión con Google'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error de conexión'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

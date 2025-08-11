@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'age_verification_screen.dart';
+import '../../shared/data/countries_data.dart';
 
 /// Pantalla de registro de teléfono con selector de código de país
 class PhoneRegistrationScreen extends StatefulWidget {
@@ -20,24 +21,9 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
   String _selectedCountryFlag = '🇨🇴';
   bool _showCountryList = false;
 
-  // Lista de países con códigos únicos
-  final List<Map<String, String>> _countries = [
-    {'name': 'Colombia', 'code': '+57', 'flag': '🇨🇴'},
-    {'name': 'Estados Unidos', 'code': '+1', 'flag': '🇺🇸'},
-    {'name': 'México', 'code': '+52', 'flag': '🇲🇽'},
-    {'name': 'España', 'code': '+34', 'flag': '🇪🇸'},
-    {'name': 'Argentina', 'code': '+54', 'flag': '🇦🇷'},
-    {'name': 'Chile', 'code': '+56', 'flag': '🇨🇱'},
-    {'name': 'Perú', 'code': '+51', 'flag': '🇵🇪'},
-    {'name': 'Venezuela', 'code': '+58', 'flag': '🇻🇪'},
-    {'name': 'Ecuador', 'code': '+593', 'flag': '🇪🇨'},
-    {'name': 'Brasil', 'code': '+55', 'flag': '🇧🇷'},
-    {'name': 'Canadá', 'code': '+1-CA', 'flag': '🇨🇦'},
-    {'name': 'Reino Unido', 'code': '+44', 'flag': '🇬🇧'},
-    {'name': 'Francia', 'code': '+33', 'flag': '🇫🇷'},
-    {'name': 'Alemania', 'code': '+49', 'flag': '🇩🇪'},
-    {'name': 'Italia', 'code': '+39', 'flag': '🇮🇹'},
-  ];
+  List<Map<String, String>> _countries = CountriesData.countries;
+  List<Map<String, String>> _filteredCountries = CountriesData.countries;
+  final _searchController = TextEditingController();
 
   final Map<String, Map<String, String>> _translations = {
     'es': {
@@ -166,31 +152,56 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
               if (_showCountryList) ...[
                 const SizedBox(height: 16),
                 Container(
-                  height: 200,
+                  height: 300,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey.shade300),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: ListView.builder(
-                    itemCount: _countries.length,
-                    itemBuilder: (context, index) {
-                      final country = _countries[index];
-                      return ListTile(
-                        leading: Text(country['flag']!, style: const TextStyle(fontSize: 20)),
-                        title: Text(country['name']!),
-                        trailing: Text(
-                          country['code']!,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
+                  child: Column(
+                    children: [
+                      // Buscador
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            hintText: 'Buscar país...',
+                            prefixIcon: const Icon(Icons.search),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          ),
+                          onChanged: _filterCountries,
                         ),
-                        onTap: () {
-                          setState(() {
-                            _selectedCountryCode = country['code']!;
-                            _selectedCountryFlag = country['flag']!;
-                            _showCountryList = false;
-                          });
-                        },
-                      );
-                    },
+                      ),
+                      // Lista de países
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _filteredCountries.length,
+                          itemBuilder: (context, index) {
+                            final country = _filteredCountries[index];
+                            return ListTile(
+                              leading: Text(country['flag']!, style: const TextStyle(fontSize: 20)),
+                              title: Text(country['name']!),
+                              trailing: Text(
+                                country['code']!,
+                                style: const TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  _selectedCountryCode = country['code']!;
+                                  _selectedCountryFlag = country['flag']!;
+                                  _showCountryList = false;
+                                  _searchController.clear();
+                                  _filteredCountries = _countries;
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -254,9 +265,16 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
     );
   }
 
+  void _filterCountries(String query) {
+    setState(() {
+      _filteredCountries = CountriesData.searchCountries(query);
+    });
+  }
+
   @override
   void dispose() {
     _phoneController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 }
