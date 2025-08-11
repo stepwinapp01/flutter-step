@@ -1,0 +1,1 @@
+// Archivo eliminado - usar lista simple en lugar de modelo complejo
