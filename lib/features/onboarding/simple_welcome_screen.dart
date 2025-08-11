@@ -21,52 +21,27 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-              // Selector de idioma simple
+              // Selector de idioma desplegable
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () => setState(() => selectedLanguage = 'es'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: selectedLanguage == 'es' ? const Color(0xFF6B46C1) : Colors.transparent,
-                        border: Border.all(color: const Color(0xFF6B46C1)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        '🇪🇸 ES',
-                        style: TextStyle(
-                          color: selectedLanguage == 'es' ? Colors.white : const Color(0xFF6B46C1),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: () => setState(() => selectedLanguage = 'en'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: selectedLanguage == 'en' ? const Color(0xFF6B46C1) : Colors.transparent,
-                        border: Border.all(color: const Color(0xFF6B46C1)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        '🇺🇸 EN',
-                        style: TextStyle(
-                          color: selectedLanguage == 'en' ? Colors.white : const Color(0xFF6B46C1),
-                        ),
-                      ),
-                    ),
+                  DropdownButton<String>(
+                    value: selectedLanguage,
+                    underline: Container(),
+                    items: const [
+                      DropdownMenuItem(value: 'es', child: Text('🇪🇸 ES')),
+                      DropdownMenuItem(value: 'en', child: Text('🇺🇸 EN')),
+                    ],
+                    onChanged: (value) => setState(() => selectedLanguage = value!),
                   ),
                 ],
               ),
               
               const Spacer(),
               
-              // Logo
+              // Logo con margen
               Container(
+                margin: const EdgeInsets.only(bottom: 40),
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
@@ -84,8 +59,6 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
                   ),
                 ),
               ),
-              
-              const SizedBox(height: 30),
               
               // Título
               Text(
