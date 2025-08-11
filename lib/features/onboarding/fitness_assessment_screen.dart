@@ -6,7 +6,9 @@ import '../coach/presentation/coach_plan_screen.dart';
 
 /// Pantalla de evaluación física inicial
 class FitnessAssessmentScreen extends StatefulWidget {
-  const FitnessAssessmentScreen({super.key});
+  final int? age;
+  
+  const FitnessAssessmentScreen({super.key, this.age});
 
   @override
   State<FitnessAssessmentScreen> createState() => _FitnessAssessmentScreenState();
@@ -20,6 +22,15 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
   final _ageController = TextEditingController();
+  
+  @override
+  void initState() {
+    super.initState();
+    // Pre-llenar la edad si viene de la pantalla anterior
+    if (widget.age != null) {
+      _ageController.text = widget.age.toString();
+    }
+  }
   String _activityLevel = 'sedentary';
   int _screenTimeHours = 8;
   double _currentWaterIntake = 1.5;
@@ -165,10 +176,16 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
           TextField(
             controller: _ageController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
+            readOnly: widget.age != null,
+            decoration: InputDecoration(
               labelText: 'Edad (años)',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.cake),
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.cake),
+              suffixIcon: widget.age != null 
+                  ? const Icon(Icons.check_circle, color: Colors.green)
+                  : null,
+              filled: widget.age != null,
+              fillColor: widget.age != null ? Colors.grey.shade100 : null,
             ),
           ),
         ],

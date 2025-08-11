@@ -180,9 +180,10 @@ class _AgeVerificationScreenState extends State<AgeVerificationScreen> {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: canContinue ? () {
+                    final age = _calculateAge(selectedDate!);
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const FitnessAssessmentScreen(),
+                        builder: (context) => FitnessAssessmentScreen(age: age),
                       ),
                     );
                   } : null,
