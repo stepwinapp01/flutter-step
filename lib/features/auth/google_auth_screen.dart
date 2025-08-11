@@ -151,7 +151,7 @@ class GoogleAuthScreen extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const SimpleWelcomeScreen(language: 'es'),
+              builder: (context) => const SimpleWelcomeScreen(),
             ),
           );
         } else {
