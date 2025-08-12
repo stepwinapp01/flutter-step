@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../shared/services/mock_data_service.dart';
 import '../../shared/services/user_service.dart';
+import '../onboarding/simple_welcome_screen.dart';
 
 /// Pantalla de inicio con dashboard principal
 class HomeScreen extends StatelessWidget {
@@ -105,8 +106,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_outlined),
+                    onPressed: () => _showLogoutDialog(context),
+                    icon: const Icon(Icons.logout, color: Colors.red),
+                    tooltip: 'Cerrar Sesión',
                   ),
                 ],
               ),
@@ -596,6 +598,44 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       )).toList(),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('¿Cerrar Sesión?'),
+        content: const Text('¿Estás seguro de que quieres cerrar sesión?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _logout(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Cerrar Sesión'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _logout(BuildContext context) {
+    UserService().clearUserData();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SimpleWelcomeScreen(),
+      ),
+      (route) => false,
     );
   }
 }
