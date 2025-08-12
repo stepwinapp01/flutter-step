@@ -21,101 +21,123 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
   final List<Map<String, dynamic>> levels = [
     {
       'level': 1,
-      'name': 'Despertar',
-      'description': 'Primeros pasos en tu transformación',
-      'tokens': '0 - 1,000',
+      'name': 'Semilla',
+      'description': 'El comienzo de tu transformación',
+      'subscription': '\$11 USD',
+      'members': '0 miembros activos',
+      'monthly': '\$0 ganancia mensual',
+      'bonus': '\$0 bono cumplimiento',
+      'equipment': 'No aplica',
       'color': Color(0xFF10B981),
-      'icon': '🌅',
-      'benefits': [
-        'Acceso básico a la app',
-        'Seguimiento de pasos',
-        'Chat con Coach Adán',
-        'Crear equipo',
-      ],
+      'icon': '🌱',
     },
     {
       'level': 2,
-      'name': 'Explorar',
+      'name': 'Explorador',
       'description': 'Descubriendo nuevas posibilidades',
-      'tokens': '1,001 - 5,000',
+      'subscription': '\$11 USD',
+      'members': '3 miembros activos',
+      'monthly': '\$5 ganancia mensual',
+      'bonus': 'Hasta \$2',
+      'equipment': 'Hasta \$3',
       'color': Color(0xFF3B82F6),
       'icon': '🔍',
-      'benefits': [
-        'Seguimiento de agua',
-        'Metas personalizadas',
-        'Acceso a comunidad',
-        'Recompensas básicas',
-      ],
     },
     {
       'level': 3,
-      'name': 'Construir',
-      'description': 'Formando hábitos saludables',
-      'tokens': '5,001 - 15,000',
+      'name': 'Despertar',
+      'description': 'Despertando tu potencial',
+      'subscription': '\$18 USD',
+      'members': '5 miembros activos',
+      'monthly': '\$15 ganancia mensual',
+      'bonus': 'Hasta \$5',
+      'equipment': 'Hasta \$10',
       'color': Color(0xFF8B5CF6),
-      'icon': '🏗️',
-      'benefits': [
-        'Seguimiento de sueño',
-        'Planes avanzados',
-        'Competencias grupales',
-        'Tokens extra',
-      ],
+      'icon': '🌅',
     },
     {
       'level': 4,
-      'name': 'Florecer',
-      'description': 'Crecimiento y desarrollo',
-      'tokens': '15,001 - 50,000',
+      'name': 'Ascenso',
+      'description': 'Elevando tu nivel de vida',
+      'subscription': '\$18 USD',
+      'members': '10 miembros activos',
+      'monthly': '\$30 ganancia mensual',
+      'bonus': 'Hasta \$8',
+      'equipment': 'Hasta \$15',
       'color': Color(0xFFF59E0B),
-      'icon': '🌸',
-      'benefits': [
-        'Análisis detallado',
-        'Coach personalizado',
-        'Eventos exclusivos',
-        'Retiros premium',
-      ],
+      'icon': '⬆️',
     },
     {
       'level': 5,
-      'name': 'Brillar',
-      'description': 'Alcanzando la excelencia',
-      'tokens': '50,001 - 100,000',
-      'color': Color(0xFFEF4444),
-      'icon': '✨',
-      'benefits': [
-        'Mentorías 1:1',
-        'Acceso VIP',
-        'Recompensas premium',
-        'Certificaciones',
-      ],
+      'name': 'Sabio',
+      'description': 'Sabiduría y conocimiento',
+      'subscription': '\$25 USD',
+      'members': '20 miembros activos',
+      'monthly': '\$50 ganancia mensual',
+      'bonus': 'Hasta \$12',
+      'equipment': 'Hasta \$25',
+      'color': Color(0xFF6366F1),
+      'icon': '🧙‍♂️',
     },
     {
       'level': 6,
-      'name': 'Trascender',
-      'description': 'Superando todos los límites',
-      'tokens': '100,001 - 500,000',
-      'color': Color(0xFF7C3AED),
-      'icon': '🚀',
-      'benefits': [
-        'Programa élite',
-        'Networking exclusivo',
-        'Inversiones especiales',
-        'Liderazgo comunitario',
-      ],
+      'name': 'Líder',
+      'description': 'Liderando con el ejemplo',
+      'subscription': '\$25 USD',
+      'members': '30 miembros activos',
+      'monthly': '\$75 ganancia mensual',
+      'bonus': 'Hasta \$18',
+      'equipment': 'Hasta \$35',
+      'color': Color(0xFFEF4444),
+      'icon': '👑',
     },
     {
       'level': 7,
-      'name': 'Leyenda',
-      'description': 'El nivel más alto de maestría',
-      'tokens': '500,001+',
+      'name': 'Maestro',
+      'description': 'Maestría en todos los aspectos',
+      'subscription': '\$25 USD',
+      'members': '50 miembros activos',
+      'monthly': '\$100 ganancia mensual',
+      'bonus': 'Hasta \$25',
+      'equipment': 'Hasta \$50',
+      'color': Color(0xFF7C3AED),
+      'icon': '🎓',
+    },
+    {
+      'level': 8,
+      'name': 'Guerrero',
+      'description': 'Fuerza y determinación',
+      'subscription': '\$25 USD',
+      'members': '80 miembros activos',
+      'monthly': '\$150 ganancia mensual',
+      'bonus': 'Hasta \$35',
+      'equipment': 'Hasta \$80',
       'color': Color(0xFFDC2626),
-      'icon': '👑',
-      'benefits': [
-        'Estatus de leyenda',
-        'Beneficios ilimitados',
-        'Influencia global',
-        'Legado permanente',
-      ],
+      'icon': '⚔️',
+    },
+    {
+      'level': 9,
+      'name': 'Campeón',
+      'description': 'Campeón de la transformación',
+      'subscription': '\$25 USD',
+      'members': '90 miembros activos',
+      'monthly': '\$200 ganancia mensual',
+      'bonus': 'Hasta \$50',
+      'equipment': 'Hasta \$100',
+      'color': Color(0xFFF59E0B),
+      'icon': '🏆',
+    },
+    {
+      'level': 10,
+      'name': 'Gladiador',
+      'description': 'El nivel más alto de maestría',
+      'subscription': '\$25 USD',
+      'members': '100 miembros activos',
+      'monthly': '\$300 ganancia mensual',
+      'bonus': 'Hasta \$75',
+      'equipment': 'Hasta \$150',
+      'color': Color(0xFF059669),
+      'icon': '🏛️',
     },
   ];
 
@@ -150,7 +172,7 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Conoce los 7 niveles de transformación',
+              'Conoce los 10 niveles de transformación',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.8),
                 fontSize: 16,
@@ -347,7 +369,7 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
               
               // Beneficios
               const Text(
-                'Beneficios:',
+                'Beneficios del Nivel:',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -357,37 +379,49 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
               const SizedBox(height: 12),
               
               Expanded(
-                child: ListView.builder(
-                  itemCount: level['benefits'].length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              level['benefits'][index],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                child: Column(
+                  children: [
+                    _buildBenefitRow('👥', 'Miembros:', level['members']),
+                    _buildBenefitRow('💰', 'Ganancia:', level['monthly']),
+                    _buildBenefitRow('🎁', 'Bono:', level['bonus']),
+                    _buildBenefitRow('🏋️', 'Equipo:', level['equipment']),
+                    _buildBenefitRow('💳', 'Suscripción:', level['subscription']),
+                  ],
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBenefitRow(String icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Text(icon, style: const TextStyle(fontSize: 20)),
+          const SizedBox(width: 12),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

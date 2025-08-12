@@ -67,13 +67,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _buildSettingsTile(
                   Icons.emoji_events,
                   'Ver Niveles',
-                  'Conoce los 7 niveles de transformación',
+                  'Conoce los 10 niveles de transformación',
                   () => _showLevelsSystem(),
                 ),
                 _buildSettingsTile(
                   Icons.trending_up,
                   'Mi Progreso',
-                  'Nivel actual: Despertar (250/1000 tokens)',
+                  'Nivel actual: Semilla - Suscripción \$11',
                   () => _showMyProgress(),
                 ),
               ],
@@ -572,23 +572,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Nivel Actual: Despertar',
+              'Nivel Actual: Semilla',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text('Tokens: 250 / 1,000'),
+            const Text('Suscripción: \$11 USD'),
+            const Text('Miembros activos: 0'),
+            const Text('Ganancia mensual: \$0'),
             const SizedBox(height: 16),
             LinearProgressIndicator(
-              value: 0.25,
+              value: 0.1,
               backgroundColor: Colors.grey.shade300,
               valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF10B981)),
             ),
             const SizedBox(height: 16),
             const Text(
-              'Próximo nivel: Explorar',
+              'Próximo nivel: Explorador',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            const Text('Necesitas 750 tokens más'),
+            const Text('Necesitas 3 miembros activos'),
           ],
         ),
         actions: [
