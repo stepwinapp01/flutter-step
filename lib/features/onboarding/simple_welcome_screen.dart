@@ -21,49 +21,50 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-              // Selector de idioma simple
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () => setState(() => selectedLanguage = 'es'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: selectedLanguage == 'es' ? const Color(0xFF6B46C1) : Colors.transparent,
-                        border: Border.all(color: const Color(0xFF6B46C1)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        '🇪🇸 ES',
-                        style: TextStyle(
-                          color: selectedLanguage == 'es' ? Colors.white : const Color(0xFF6B46C1),
+              // Selector de idioma desplegable
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: selectedLanguage,
+                      icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF6B46C1)),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() => selectedLanguage = newValue);
+                        }
+                      },
+                      items: [
+                        DropdownMenuItem(
+                          value: 'es',
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('🇪🇸', style: TextStyle(fontSize: 16)),
+                              SizedBox(width: 8),
+                              Text('ES', style: TextStyle(color: Color(0xFF6B46C1), fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
-                      ),
+                        DropdownMenuItem(
+                          value: 'en',
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('🇺🇸', style: TextStyle(fontSize: 16)),
+                              SizedBox(width: 8),
+                              Text('EN', style: TextStyle(color: Color(0xFF6B46C1), fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  GestureDetector(
-                    onTap: () => setState(() => selectedLanguage = 'en'),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: selectedLanguage == 'en' ? const Color(0xFF6B46C1) : Colors.transparent,
-                        border: Border.all(color: const Color(0xFF6B46C1)),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        '🇺🇸 EN',
-                        style: TextStyle(
-                          color: selectedLanguage == 'en' ? Colors.white : const Color(0xFF6B46C1),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               
-              const Spacer(),
+              const SizedBox(height: 60),
               
               // Logo
               Container(
