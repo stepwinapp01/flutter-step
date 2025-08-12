@@ -23,6 +23,10 @@ class UserService {
   List<String> get medicalConditions => _medicalConditions;
 
   // Setters
+  void setUserName(String name) {
+    _userName = name;
+  }
+  
   void setUserData({
     required String name,
     required String email,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'age_verification_screen.dart';
 import '../../shared/data/countries_data.dart';
+import '../../shared/services/user_service.dart';
 
 /// Pantalla de registro de teléfono con selector de código de país
 class PhoneRegistrationScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class PhoneRegistrationScreen extends StatefulWidget {
 }
 
 class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
+  final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   String _selectedCountryCode = '+57';
   String _selectedCountryFlag = '🇨🇴';
@@ -27,20 +29,24 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
 
   final Map<String, Map<String, String>> _translations = {
     'es': {
-      'title': 'Número de Teléfono',
-      'subtitle': 'Ingresa tu número de teléfono para continuar',
+      'title': 'Información Personal',
+      'subtitle': 'Ingresa tu nombre y número de teléfono para continuar',
+      'fullName': 'Nombre completo',
       'phoneNumber': 'Número de teléfono',
       'selectCountry': 'Seleccionar país',
       'continue': 'Continuar',
+      'nameRequired': 'El nombre es requerido',
       'phoneRequired': 'El número de teléfono es requerido',
       'phoneInvalid': 'Número de teléfono inválido',
     },
     'en': {
-      'title': 'Phone Number',
-      'subtitle': 'Enter your phone number to continue',
+      'title': 'Personal Information',
+      'subtitle': 'Enter your name and phone number to continue',
+      'fullName': 'Full name',
       'phoneNumber': 'Phone number',
       'selectCountry': 'Select country',
       'continue': 'Continue',
+      'nameRequired': 'Name is required',
       'phoneRequired': 'Phone number is required',
       'phoneInvalid': 'Invalid phone number',
     },
@@ -87,6 +93,30 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
               ),
               
               const SizedBox(height: 40),
+              
+              // Campo de nombre completo
+              TextField(
+                controller: _nameController,
+                keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: _getText('fullName'),
+                  prefixIcon: const Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade300),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Color(0xFF6B46C1)),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 20),
               
               // Selector de país y número de teléfono
               Row(
@@ -241,6 +271,11 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
   }
 
   void _validateAndContinue() {
+    if (_nameController.text.trim().isEmpty) {
+      _showSnackBar(_getText('nameRequired'));
+      return;
+    }
+
     if (_phoneController.text.trim().isEmpty) {
       _showSnackBar(_getText('phoneRequired'));
       return;
@@ -250,6 +285,9 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
       _showSnackBar(_getText('phoneInvalid'));
       return;
     }
+
+    // Guardar el nombre del usuario
+    UserService().setUserName(_nameController.text.trim());
 
     // Continuar a la siguiente pantalla
     Navigator.of(context).push(
@@ -276,6 +314,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _phoneController.dispose();
     _searchController.dispose();
     super.dispose();
