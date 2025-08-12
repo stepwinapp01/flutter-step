@@ -324,6 +324,7 @@ class _CoachAdanScreenState extends State<CoachAdanScreen> with SingleTickerProv
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
