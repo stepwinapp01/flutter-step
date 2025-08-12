@@ -159,10 +159,10 @@ class FitnessPlanGenerator {
     double targetSleep = 7.0;
     int maxScreenTime = 6;
     
-    // Ajustar según nivel de actividad
+    // Ajustar según nivel de actividad (convertir minutos a pasos aproximados)
     switch (profile.activityLevel) {
       case 'sedentary':
-        targetSteps = profile.currentDailySteps + 1000;
+        targetSteps = (profile.currentWalkingMinutes + 10) * 100; // ~100 pasos por minuto
         maxScreenTime = profile.screenTimeHours - 1;
         break;
       case 'light':
@@ -179,8 +179,8 @@ class FitnessPlanGenerator {
         break;
     }
     
-    // Ajustar por peso (más agua para mayor peso)
-    targetWater = 2.0 + (profile.weight - 70) * 0.01;
+    // Ajustar vasos de agua por peso (más vasos para mayor peso)
+    targetWater = 8.0 + (profile.weight - 70) * 0.02;
     
     // Ajustar sueño por edad
     if (profile.age < 25) targetSleep = 8.0;
@@ -188,7 +188,7 @@ class FitnessPlanGenerator {
     
     return {
       'steps': targetSteps.clamp(3000, 15000),
-      'water': targetWater.clamp(1.5, 4.0),
+      'water': targetWater.clamp(6, 12), // vasos de agua
       'sleep': targetSleep.clamp(6.0, 9.0),
       'screenTime': maxScreenTime.clamp(2, 8),
     };
@@ -226,9 +226,15 @@ class FitnessPlanGenerator {
     }
     
     // Recomendaciones por hidratación
-    if (profile.currentWaterIntake < 2.0) {
+    if (profile.currentWaterGlasses < 6) {
       recommendations.add('💧 Lleva una botella de agua contigo siempre');
       recommendations.add('⏰ Programa recordatorios para beber agua cada 2 horas');
+    }
+    
+    // Recomendaciones por meditación/oración
+    if (profile.currentMeditationMinutes < 10) {
+      recommendations.add('🙏 Dedica al menos 10 minutos diarios a la meditación o oración');
+      recommendations.add('🌅 Comienza el día con 5 minutos de reflexión o gratitud');
     }
     
     return recommendations;
@@ -237,12 +243,15 @@ class FitnessPlanGenerator {
   /// Crea progresión semanal del plan
   static List<WeeklyGoal> _createWeeklyProgression(FitnessProfileModel profile, Map<String, num> targets) {
     final progression = <WeeklyGoal>[];
-    final baseSteps = profile.currentDailySteps;
-    final targetSteps = targets['steps']! as int;
-    final stepIncrement = ((targetSteps - baseSteps) / 4).round();
+    final baseSteps = (profile.currentWalkingMinutes * 100).clamp(1000, 20000); // Convertir minutos a pasos aproximados
+    final targetSteps = (targets['steps']! as int).clamp(3000, 15000);
+    final stepIncrement = ((targetSteps - baseSteps) / 4).round().abs();
     
     for (int week = 1; week <= 4; week++) {
-      final weekSteps = (baseSteps + (stepIncrement * week)).clamp(baseSteps, targetSteps);
+      final calculatedSteps = baseSteps + (stepIncrement * week);
+      final minSteps = baseSteps < targetSteps ? baseSteps : targetSteps;
+      final maxSteps = baseSteps > targetSteps ? baseSteps : targetSteps;
+      final weekSteps = calculatedSteps.clamp(minSteps, maxSteps);
       final weekWater = (targets['water']! as double) * (0.7 + (week * 0.075));
       final weekSleep = targets['sleep']! as double;
       final weekScreenTime = (targets['screenTime']! as int) + (4 - week);

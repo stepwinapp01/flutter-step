@@ -33,9 +33,10 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
   }
   String _activityLevel = 'sedentary';
   int _screenTimeHours = 8;
-  double _currentWaterIntake = 1.5;
+  int _currentWaterGlasses = 6;
   double _currentSleepHours = 6.0;
-  int _currentDailySteps = 3000;
+  int _currentWalkingMinutes = 15;
+  int _currentMeditationMinutes = 0;
   final List<String> _healthConditions = [];
 
   @override
@@ -259,13 +260,13 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
           ),
           const SizedBox(height: 24),
           
-          Text('💧 Consumo de agua actual: ${_currentWaterIntake.toStringAsFixed(1)}L'),
+          Text('💧 Vasos de agua al día: $_currentWaterGlasses vasos'),
           Slider(
-            value: _currentWaterIntake,
-            min: 0.5,
-            max: 4.0,
-            divisions: 14,
-            onChanged: (value) => setState(() => _currentWaterIntake = value),
+            value: _currentWaterGlasses.toDouble(),
+            min: 2,
+            max: 12,
+            divisions: 10,
+            onChanged: (value) => setState(() => _currentWaterGlasses = value.round()),
             activeColor: AppConstants.primaryPurple,
           ),
           const SizedBox(height: 24),
@@ -281,13 +282,24 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
           ),
           const SizedBox(height: 24),
           
-          Text('🚶 Pasos diarios aproximados: $_currentDailySteps'),
+          Text('🚶 Minutos de caminata diarios: $_currentWalkingMinutes min'),
           Slider(
-            value: _currentDailySteps.toDouble(),
-            min: 1000,
-            max: 15000,
-            divisions: 14,
-            onChanged: (value) => setState(() => _currentDailySteps = value.round()),
+            value: _currentWalkingMinutes.toDouble(),
+            min: 0,
+            max: 120,
+            divisions: 24,
+            onChanged: (value) => setState(() => _currentWalkingMinutes = value.round()),
+            activeColor: AppConstants.primaryPurple,
+          ),
+          const SizedBox(height: 24),
+          
+          Text('🙏 Tiempo de oración/meditación: $_currentMeditationMinutes min'),
+          Slider(
+            value: _currentMeditationMinutes.toDouble(),
+            min: 0,
+            max: 60,
+            divisions: 12,
+            onChanged: (value) => setState(() => _currentMeditationMinutes = value.round()),
             activeColor: AppConstants.primaryPurple,
           ),
         ],
@@ -373,9 +385,10 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
         age: int.parse(_ageController.text),
         activityLevel: _activityLevel,
         screenTimeHours: _screenTimeHours,
-        currentWaterIntake: _currentWaterIntake,
+        currentWaterGlasses: _currentWaterGlasses,
         currentSleepHours: _currentSleepHours,
-        currentDailySteps: _currentDailySteps,
+        currentWalkingMinutes: _currentWalkingMinutes,
+        currentMeditationMinutes: _currentMeditationMinutes,
         healthConditions: _healthConditions,
         createdAt: DateTime.now(),
       );

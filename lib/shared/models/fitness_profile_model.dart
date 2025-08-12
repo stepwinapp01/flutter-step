@@ -6,9 +6,10 @@ class FitnessProfileModel {
   final int age;
   final String activityLevel; // 'sedentary', 'light', 'moderate', 'active'
   final int screenTimeHours; // horas diarias
-  final double currentWaterIntake; // litros
+  final int currentWaterGlasses; // vasos de agua
   final double currentSleepHours; // horas
-  final int currentDailySteps;
+  final int currentWalkingMinutes; // minutos de caminata
+  final int currentMeditationMinutes; // minutos de oración/meditación
   final List<String> healthConditions;
   final DateTime createdAt;
 
@@ -19,9 +20,10 @@ class FitnessProfileModel {
     required this.age,
     required this.activityLevel,
     required this.screenTimeHours,
-    required this.currentWaterIntake,
+    required this.currentWaterGlasses,
     required this.currentSleepHours,
-    required this.currentDailySteps,
+    required this.currentWalkingMinutes,
+    required this.currentMeditationMinutes,
     required this.healthConditions,
     required this.createdAt,
   });
@@ -45,9 +47,10 @@ class FitnessProfileModel {
       age: json['age'] ?? 25,
       activityLevel: json['activityLevel'] ?? 'sedentary',
       screenTimeHours: json['screenTimeHours'] ?? 8,
-      currentWaterIntake: (json['currentWaterIntake'] ?? 1.5).toDouble(),
+      currentWaterGlasses: json['currentWaterGlasses'] ?? 6,
       currentSleepHours: (json['currentSleepHours'] ?? 6.0).toDouble(),
-      currentDailySteps: json['currentDailySteps'] ?? 3000,
+      currentWalkingMinutes: json['currentWalkingMinutes'] ?? 15,
+      currentMeditationMinutes: json['currentMeditationMinutes'] ?? 0,
       healthConditions: List<String>.from(json['healthConditions'] ?? []),
       createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
     );
@@ -61,9 +64,10 @@ class FitnessProfileModel {
       'age': age,
       'activityLevel': activityLevel,
       'screenTimeHours': screenTimeHours,
-      'currentWaterIntake': currentWaterIntake,
+      'currentWaterGlasses': currentWaterGlasses,
       'currentSleepHours': currentSleepHours,
-      'currentDailySteps': currentDailySteps,
+      'currentWalkingMinutes': currentWalkingMinutes,
+      'currentMeditationMinutes': currentMeditationMinutes,
       'healthConditions': healthConditions,
       'createdAt': createdAt.toIso8601String(),
     };
