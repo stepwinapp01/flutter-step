@@ -111,34 +111,52 @@ class _LevelCongratulationsScreenState extends State<LevelCongratulationsScreen>
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Beneficios Desbloqueados:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1F2937),
-                      ),
+                    const Row(
+                      children: [
+                        Icon(Icons.star, color: Color(0xFF6B46C1), size: 24),
+                        SizedBox(width: 8),
+                        Text(
+                          'Beneficios Desbloqueados',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1F2937),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16),
-                    ...widget.benefits.map((benefit) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.check_circle, color: Color(0xFF10B981), size: 20),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              benefit,
-                              style: const TextStyle(fontSize: 16),
+                    
+                    // Organizar beneficios en grid si hay más de 3
+                    widget.benefits.length > 3
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 3,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
                             ),
+                            itemCount: widget.benefits.length,
+                            itemBuilder: (context, index) => _buildBenefitItem(widget.benefits[index]),
+                          )
+                        : Column(
+                            children: widget.benefits
+                                .map((benefit) => _buildBenefitItem(benefit))
+                                .toList(),
                           ),
-                        ],
-                      ),
-                    )).toList(),
                   ],
                 ),
               ),
@@ -267,6 +285,26 @@ class _LevelCongratulationsScreenState extends State<LevelCongratulationsScreen>
     setState(() => _showTeamCreation = false);
   }
 
+  Widget _buildBenefitItem(String benefit) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.check_circle, color: Color(0xFF10B981), size: 20),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              benefit,
+              style: const TextStyle(fontSize: 14),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

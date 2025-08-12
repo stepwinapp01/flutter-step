@@ -349,28 +349,96 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
                 ),
               ),
               
-              const SizedBox(height: 20),
-              
-
-              
               const SizedBox(height: 24),
               
-              // Beneficios
-              const Text(
-                'Beneficios del Nivel:',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              // Información organizada en columnas
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    // Primera fila - Suscripción y Miembros
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildInfoColumn(
+                            '💳',
+                            'Suscripción',
+                            level['subscription'],
+                          ),
+                        ),
+                        Container(
+                          width: 1,
+                          height: 50,
+                          color: Colors.white.withOpacity(0.3),
+                        ),
+                        Expanded(
+                          child: _buildInfoColumn(
+                            '👥',
+                            'Miembros',
+                            level['members'],
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Línea divisoria
+                    Container(
+                      height: 1,
+                      color: Colors.white.withOpacity(0.3),
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Segunda fila - Ganancia y Bonos
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildInfoColumn(
+                            '💰',
+                            'Ganancia',
+                            level['monthly'],
+                          ),
+                        ),
+                        Container(
+                          width: 1,
+                          height: 50,
+                          color: Colors.white.withOpacity(0.3),
+                        ),
+                        Expanded(
+                          child: _buildInfoColumn(
+                            '🎁',
+                            'Bono Cumplimiento',
+                            level['bonus'],
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Línea divisoria
+                    Container(
+                      height: 1,
+                      color: Colors.white.withOpacity(0.3),
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Tercera fila - Bono Equipo (centrado)
+                    _buildInfoColumn(
+                      '🏋️',
+                      'Bono Equipo',
+                      level['equipment'],
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 12),
-              
-              _buildBenefitRow('👥', 'Miembros:', level['members']),
-              _buildBenefitRow('💰', 'Ganancia:', level['monthly']),
-              _buildBenefitRow('🎁', 'Bono Cumplimiento:', level['bonus']),
-              _buildBenefitRow('🏋️', 'Bono Equipo:', level['equipment']),
-              _buildBenefitRow('💳', 'Suscripción:', level['subscription']),
               
               const SizedBox(height: 20),
               ],
@@ -381,33 +449,34 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
     );
   }
 
-  Widget _buildBenefitRow(String icon, String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        children: [
-          Text(icon, style: const TextStyle(fontSize: 20)),
-          const SizedBox(width: 12),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+  Widget _buildInfoColumn(String icon, String label, String value) {
+    return Column(
+      children: [
+        Text(
+          icon,
+          style: const TextStyle(fontSize: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
           ),
-        ],
-      ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
