@@ -368,6 +368,8 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
               
               _buildBenefitRow('👥', 'Miembros:', level['members']),
               _buildBenefitRow('💰', 'Ganancia:', level['monthly']),
+              _buildBenefitRow('🎁', 'Bono Cumplimiento:', level['bonus']),
+              _buildBenefitRow('🏋️', 'Bono Equipo:', level['equipment']),
               _buildBenefitRow('💳', 'Suscripción:', level['subscription']),
               
               const SizedBox(height: 20),
