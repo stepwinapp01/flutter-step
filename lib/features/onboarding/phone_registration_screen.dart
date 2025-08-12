@@ -63,10 +63,11 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 _getText('title'),
@@ -206,7 +207,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                 ),
               ],
               
-              const Spacer(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.3),
               
               // Botón continuar
               SizedBox(
@@ -230,6 +231,8 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                   ),
                 ),
               ),
+              
+              const SizedBox(height: 20),
             ],
           ),
         ),

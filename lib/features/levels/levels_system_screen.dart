@@ -349,21 +349,7 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
               
               const SizedBox(height: 20),
               
-              // Tokens requeridos
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '${level['tokens']} tokens',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+
               
               const SizedBox(height: 24),
               
