@@ -17,7 +17,7 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
@@ -124,7 +124,7 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
                 ],
               ),
               
-              const Spacer(),
+              const SizedBox(height: 60),
               
               // Botón continuar
               SizedBox(
@@ -154,6 +154,8 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
                   ),
                 ),
               ),
+              
+              const SizedBox(height: 20),
             ],
           ),
         ),

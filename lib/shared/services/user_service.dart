@@ -49,4 +49,15 @@ class UserService {
     if (_birthDate == null) return 0;
     return DateTime.now().difference(_birthDate!).inDays ~/ 365;
   }
+
+  void clearUserData() {
+    _userName = 'Usuario';
+    _userEmail = '';
+    _userPhone = '';
+    _birthDate = null;
+    _gender = 'Hombre';
+    _weight = 0;
+    _height = 0;
+    _medicalConditions = [];
+  }
 }
