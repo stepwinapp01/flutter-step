@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'phone_registration_screen.dart';
+import '../subscription/subscription_onboarding_screen.dart';
 
 /// Pantalla de bienvenida ultra simple sin DropdownButton
 class SimpleWelcomeScreen extends StatefulWidget {
@@ -133,7 +133,7 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => PhoneRegistrationScreen(language: selectedLanguage),
+                        builder: (context) => const SubscriptionOnboardingScreen(),
                       ),
                     );
                   },

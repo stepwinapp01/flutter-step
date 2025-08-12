@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../levels/levels_system_screen.dart';
 
 /// Pantalla de configuración con todas las opciones
 class SettingsScreen extends StatefulWidget {
@@ -55,6 +56,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   'Foto de Perfil',
                   'Cambiar imagen de perfil',
                   () => _showChangePhoto(),
+                ),
+              ],
+            ),
+            
+            // Sistema de Niveles
+            _buildSection(
+              'Sistema de Niveles',
+              [
+                _buildSettingsTile(
+                  Icons.emoji_events,
+                  'Ver Niveles',
+                  'Conoce los 7 niveles de transformación',
+                  () => _showLevelsSystem(),
+                ),
+                _buildSettingsTile(
+                  Icons.trending_up,
+                  'Mi Progreso',
+                  'Nivel actual: Despertar (250/1000 tokens)',
+                  () => _showMyProgress(),
                 ),
               ],
             ),
@@ -521,6 +541,71 @@ class _SettingsScreenState extends State<SettingsScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLevelsSystem() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LevelsSystemScreen(),
+      ),
+    );
+  }
+
+  void _showMyProgress() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.emoji_events, color: Color(0xFF10B981)),
+            SizedBox(width: 12),
+            Text('Mi Progreso'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Nivel Actual: Despertar',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text('Tokens: 250 / 1,000'),
+            const SizedBox(height: 16),
+            LinearProgressIndicator(
+              value: 0.25,
+              backgroundColor: Colors.grey.shade300,
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF10B981)),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Próximo nivel: Explorar',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Text('Necesitas 750 tokens más'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cerrar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showLevelsSystem();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF10B981),
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Ver Todos los Niveles'),
           ),
         ],
       ),
