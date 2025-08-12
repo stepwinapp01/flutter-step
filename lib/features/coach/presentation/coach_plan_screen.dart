@@ -207,6 +207,7 @@ class CoachPlanScreen extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
