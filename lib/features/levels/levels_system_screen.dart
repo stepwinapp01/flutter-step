@@ -299,9 +299,11 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
             ),
           ),
           padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
               // Header del nivel
               Row(
                 children: [
@@ -369,7 +371,8 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
               _buildBenefitRow('💳', 'Suscripción:', level['subscription']),
               
               const SizedBox(height: 20),
-            ],
+              ],
+            ),
           ),
         ),
       ),
