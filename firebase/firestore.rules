@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------
+    // Colección: users
+    // -------------------
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Subcolección: steps
+      match /steps/{stepId} {
+        allow read, write: if request.auth != null
+          && request.auth.uid == userId
+          && request.resource.data.steps >= 0 // validar que pasos no sean negativos
+          && request.resource.data.steps <= 100000; // máximo razonable por día
+      }
+
+      // Subcolección: rewards
+      match /rewards/{rewardId} {
+        allow read, write: if request.auth != null
+          && request.auth.uid == userId
+          && request.resource.data.tokens >= 0
+          && request.resource.data.tokens <= 1000; // límite diario/por transacción
+      }
+    }
+
+    // -------------------
+    // Colección: teams
+    // -------------------
+    match /teams/{teamId} {
+      allow read: if request.auth != null && request.auth.uid in resource.data.members;
+      allow write: if request.auth != null && request.auth.uid == resource.data.leaderId;
+
+      // Subcolección: chat
+      match /chat/{messageId} {
+        allow read, write: if request.auth != null && request.auth.uid in get(/databases/$(database)/documents/teams/$(teamId)).data.members;
+      }
+    }
+
+    // -------------------
+    // Colección: globalRewards
+    // -------------------
+    match /globalRewards/{rewardId} {
+      allow read: if request.auth != null;  // lectura para usuarios logueados
+      allow write: if false; // nadie puede escribir directamente
+    }
+
+    // -------------------
+    // Default: bloquear todo lo demás
+    // -------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

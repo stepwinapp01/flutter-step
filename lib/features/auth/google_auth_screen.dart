@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../onboarding/simple_welcome_screen.dart';
 import 'auth_service.dart';
+import 'sms_auth_screen.dart';
 
 class GoogleAuthScreen extends StatelessWidget {
   const GoogleAuthScreen({super.key});
@@ -99,6 +100,43 @@ class GoogleAuthScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       const Text(
                         'Continuar con Google',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Botón SMS
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SMSAuthScreen(),
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    side: const BorderSide(color: Colors.white),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('📱', style: TextStyle(fontSize: 24)),
+                      SizedBox(width: 12),
+                      Text(
+                        'Continuar con SMS',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
