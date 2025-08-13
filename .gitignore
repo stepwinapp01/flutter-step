@@ -1,4 +1,6 @@
-# Miscellaneous
+# ---------------------
+# Archivos genéricos
+# ---------------------
 *.class
 *.log
 *.pyc
@@ -9,19 +11,26 @@
 .history
 .svn/
 migrate_working_dir/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# IntelliJ related
+# ---------------------
+# IntelliJ / Android Studio
+# ---------------------
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# ---------------------
+# VS Code
+# ---------------------
+.vscode/
 
-# Flutter/Dart/Pub related
+# ---------------------
+# Flutter / Dart / Pub
+# ---------------------
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
@@ -30,24 +39,44 @@ migrate_working_dir/
 .packages
 .pub-cache/
 .pub/
-/build/
+build/
 
-# Symbolication related
-app.*.symbols
+# ---------------------
+# Android
+# ---------------------
+android/.gradle/
+android/app/debug
+android/app/profile
+android/app/release
+**/*.keystore
+**/*.jks
 
-# Obfuscation related
-app.*.map.json
+# ---------------------
+# iOS
+# ---------------------
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/App.framework
+ios/Flutter/Flutter.podspec
+ios/build/
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-
+# ---------------------
 # Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Flutter Windows
+# ---------------------
 windows/flutter/generated_plugin_registrant.cc
 windows/flutter/generated_plugin_registrant.h
+
+# ---------------------
+# Web
+# ---------------------
+web/.dart_tool/
+web/.packages
+
+# ---------------------
+# Obfuscation & Symbolication
+# ---------------------
+app.*.symbols
+app.*.map.json
+
+.gradle/

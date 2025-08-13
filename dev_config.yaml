@@ -1,0 +1,38 @@
+# Step Win App - Configuración de Desarrollo
+# Este archivo contiene configuraciones específicas para el entorno de desarrollo
+
+# Configuración de debugging
+debug:
+  enable_logging: true
+  log_level: "debug"
+  show_performance_overlay: false
+  show_debug_banner: false
+
+# Configuración de API (desarrollo)
+api:
+  base_url: "https://dev-api.stepwin.com"
+  timeout: 30000
+  retry_attempts: 3
+
+# Configuración de Coach IA
+coach_ai:
+  response_delay: 1000  # ms para simular respuesta real
+  enable_mock_responses: true
+  max_conversation_history: 50
+
+# Configuración de gamificación
+gamification:
+  enable_debug_tokens: true
+  token_multiplier: 1.0
+  level_progression_speed: 1.0
+
+# Configuración de testing
+testing:
+  enable_integration_tests: true
+  mock_user_data: true
+  skip_onboarding: false
+
+# Configuración de assets
+assets:
+  enable_asset_caching: true
+  cache_duration: 3600  # segundos
