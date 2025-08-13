@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "170951953370",
+    "project_id": "stepwin-3f2c8",
+    "storage_bucket": "stepwin-3f2c8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170951953370:android:6a92eb6c682c504dc90ee3",
+        "android_client_info": {
+          "package_name": "com.example.step_win_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170951953370-d3rkq4hu7huir951ehukvj62sssg38je.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6J8uTbx7vdROH689NE0XmCLxL5tI43P8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170951953370-d3rkq4hu7huir951ehukvj62sssg38je.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "170951953370-kgo10lec9g9l5pe7b285vub8n4gjomn7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stepwin.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

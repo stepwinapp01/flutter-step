@@ -146,7 +146,7 @@ class FitnessPlanGenerator {
       return 'Plan Despertar - Activación Gradual';
     } else if (profile.bmi > 30) {
       return 'Plan Transformación - Pérdida de Peso';
-    } else if (profile.currentDailySteps < 3000) {
+    } else if (profile.currentWalkingMinutes * 100 < 3000) {
       return 'Plan Movimiento - Hábitos Básicos';
     }
     return 'Plan Equilibrio - Vida Saludable';

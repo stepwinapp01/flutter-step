@@ -1,42 +1,55 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// Servicio de autenticación simulado para Google Sign-In
 class AuthService {
-  static bool _isSignedIn = false;
-  static String? _userEmail;
-  static String? _userName;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  /// Simula el inicio de sesión con Google
+  /// Retorna un mapa con `success: true` si el login fue exitoso
   static Future<Map<String, dynamic>?> signInWithGoogle() async {
-    // Simular delay de autenticación
-    await Future.delayed(const Duration(seconds: 2));
-    
-    // Simular éxito (en producción aquí iría la lógica real de Google Sign-In)
-    _isSignedIn = true;
-    _userEmail = 'usuario@gmail.com';
-    _userName = 'Usuario Demo';
-    
-    return {
-      'success': true,
-      'email': _userEmail,
-      'name': _userName,
-    };
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return {'success': false}; // Usuario canceló
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      // Guardar usuario en Firestore si no existe
+      final userDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid);
+
+      final docSnapshot = await userDoc.get();
+      if (!docSnapshot.exists) {
+        await userDoc.set({
+          'name': userCredential.user!.displayName,
+          'email': userCredential.user!.email,
+          'photoURL': userCredential.user!.photoURL,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      return {'success': true, 'user': userCredential.user};
+    } catch (e) {
+      print('Error en AuthService.signInWithGoogle: $e');
+      return {'success': false, 'error': e.toString()};
+    }
   }
 
-  /// Simula el cierre de sesión
   static Future<void> signOut() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    _isSignedIn = false;
-    _userEmail = null;
-    _userName = null;
+    await _auth.signOut();
+    await _googleSignIn.signOut();
   }
 
-  /// Verifica si el usuario está autenticado
-  static bool get isSignedIn => _isSignedIn;
-  
-  /// Obtiene el email del usuario
-  static String? get userEmail => _userEmail;
-  
-  /// Obtiene el nombre del usuario
-  static String? get userName => _userName;
+  static User? get currentUser => _auth.currentUser;
+  static bool get isSignedIn => _auth.currentUser != null;
 }
