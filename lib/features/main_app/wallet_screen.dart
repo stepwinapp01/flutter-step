@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de Wallet con gestión de tokens y retiros
 class WalletScreen extends StatefulWidget {
@@ -138,21 +139,21 @@ class _WalletScreenState extends State<WalletScreen> {
                 child: _buildBalanceItem(
                   _getText('available'),
                   '\$847.50',
-                  Icons.account_balance_wallet,
+                  AppIcons.accountBalanceWallet,
                 ),
               ),
               Expanded(
                 child: _buildBalanceItem(
                   _getText('staking'),
                   '\$350.00',
-                  Icons.trending_up,
+                  AppIcons.trendingUp,
                 ),
               ),
               Expanded(
                 child: _buildBalanceItem(
                   _getText('pending'),
                   '\$50.00',
-                  Icons.schedule,
+                  AppIcons.schedule,
                 ),
               ),
             ],
@@ -271,7 +272,7 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
           ),
           Icon(
-            Icons.chevron_right,
+            AppIcons.chevronRight,
             color: Colors.grey.shade400,
           ),
         ],
@@ -287,7 +288,7 @@ class _WalletScreenState extends State<WalletScreen> {
             onPressed: () {
               // TODO: Implementar retiro
             },
-            icon: const Icon(Icons.arrow_upward),
+            icon: const Icon(AppIcons.arrowUpward),
             label: Text(_getText('withdraw')),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF6B46C1),
@@ -305,7 +306,7 @@ class _WalletScreenState extends State<WalletScreen> {
             onPressed: () {
               // TODO: Implementar depósito
             },
-            icon: const Icon(Icons.arrow_downward),
+            icon: const Icon(AppIcons.arrowDownward),
             label: Text(_getText('deposit')),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
@@ -364,7 +365,7 @@ class _WalletScreenState extends State<WalletScreen> {
         child: Column(
           children: [
             Icon(
-              Icons.receipt_long,
+              AppIcons.receiptLong,
               size: 48,
               color: Colors.grey.shade400,
             ),
@@ -392,19 +393,19 @@ class _WalletScreenState extends State<WalletScreen> {
     
     switch (transaction['type']) {
       case 'reward':
-        icon = Icons.stars;
+        icon = AppIcons.stars;
         color = const Color(0xFF10B981);
         break;
       case 'staking':
-        icon = Icons.trending_up;
+        icon = AppIcons.trendingUp;
         color = const Color(0xFF3B82F6);
         break;
       case 'withdraw':
-        icon = Icons.arrow_upward;
+        icon = AppIcons.arrowUpward;
         color = const Color(0xFFEF4444);
         break;
       default:
-        icon = Icons.swap_horiz;
+        icon = AppIcons.swapHoriz;
         color = Colors.grey;
     }
 

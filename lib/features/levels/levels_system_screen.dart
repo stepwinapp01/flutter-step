@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../onboarding/phone_registration_screen.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla completa del sistema de niveles
 class LevelsSystemScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
       'monthly': '\$0 ganancia mensual',
       'bonus': '\$0 bono cumplimiento',
       'equipment': 'No aplica',
-      'color': Color(0xFF10B981),
+      'color': const Color(0xFF10B981),
       'icon': '🌱',
     },
     {
@@ -149,7 +150,7 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(AppIcons.arrowBack, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(

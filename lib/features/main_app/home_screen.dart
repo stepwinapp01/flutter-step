@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../shared/services/mock_data_service.dart';
 import '../../shared/services/user_service.dart';
 import '../onboarding/simple_welcome_screen.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de inicio con dashboard principal
 class HomeScreen extends StatelessWidget {
@@ -107,7 +108,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () => _showLogoutDialog(context),
-                    icon: const Icon(Icons.logout, color: Colors.red),
+                    icon: const Icon(AppIcons.logout, color: Colors.red),
                     tooltip: 'Cerrar Sesión',
                   ),
                 ],
@@ -135,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                       '${todayGoals.steps}',
                       '${todayGoals.targetSteps}',
                       todayGoals.steps / todayGoals.targetSteps,
-                      Icons.directions_walk,
+                      AppIcons.directionsWalk,
                       const Color(0xFF10B981),
                     ),
                   ),
@@ -146,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                       '${todayGoals.tokensEarned.toInt()}',
                       '200',
                       todayGoals.tokensEarned / 200,
-                      Icons.stars,
+                      AppIcons.stars,
                       const Color(0xFFF59E0B),
                     ),
                   ),
@@ -172,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _buildQuickAction(
                       _getText('logSteps'),
-                      Icons.directions_walk,
+                      AppIcons.directionsWalk,
                       const Color(0xFF10B981),
                       () {},
                     ),
@@ -181,7 +182,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _buildQuickAction(
                       _getText('logWater'),
-                      Icons.water_drop,
+                      AppIcons.waterDrop,
                       const Color(0xFF3B82F6),
                       () {},
                     ),
@@ -196,7 +197,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _buildQuickAction(
                       _getText('meditate'),
-                      Icons.self_improvement,
+                      AppIcons.selfImprovement,
                       const Color(0xFF8B5CF6),
                       () {},
                     ),
@@ -205,7 +206,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _buildQuickAction(
                       _getText('chatCoach'),
-                      Icons.psychology,
+                      AppIcons.psychology,
                       const Color(0xFF6B46C1),
                       () {},
                     ),
@@ -516,7 +517,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Icon(
-              Icons.favorite_border,
+              AppIcons.favoriteOutline,
               color: Colors.grey.shade400,
               size: 20,
             ),
@@ -531,13 +532,13 @@ class HomeScreen extends StatelessWidget {
       {
         'title': 'Mi Líder: Roberto Silva',
         'subtitle': 'Completó 15,000 pasos hoy',
-        'icon': Icons.emoji_events,
+        'icon': AppIcons.emojiEvents,
         'color': const Color(0xFFF59E0B),
       },
       {
         'title': 'Equipo: +5 miembros activos',
         'subtitle': 'Meta semanal alcanzada',
-        'icon': Icons.group,
+        'icon': AppIcons.group,
         'color': const Color(0xFF10B981),
       },
     ];

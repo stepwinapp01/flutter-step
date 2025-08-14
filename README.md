@@ -27,12 +27,23 @@ git clone https://github.com/tu-usuario/step_win_app.git
 # Navegar al directorio
 cd step_win_app
 
+# Configurar Firebase (REQUERIDO)
+./setup_firebase.sh
+
 # Instalar dependencias
 flutter pub get
 
 # Ejecutar la aplicación
 flutter run
 ```
+
+### ⚠️ Configuración de Seguridad
+
+**IMPORTANTE**: Antes de ejecutar la app, debes configurar Firebase:
+
+1. Ejecuta `./setup_firebase.sh`
+2. Ingresa las credenciales de Firebase Console
+3. Ver [SECURITY.md](SECURITY.md) para más detalles
 
 ## 📦 Dependencias Principales
 

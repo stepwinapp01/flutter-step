@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:170951953370:android:6a92eb6c682c504dc90ee3",
+        "mobilesdk_app_id": "1:170951953370:android:3d920296b9397edfc90ee3",
         "android_client_info": {
-          "package_name": "com.example.step_win_app"
+          "package_name": "com.stepwin.app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "170951953370-8sc5ctpkqetbtgrtvbudo026ov65bmoe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stepwin.app",
+            "certificate_hash": "2b37a7ecdd63fa2fca17db80fb0fff012df4725c"
+          }
+        },
         {
           "client_id": "170951953370-d3rkq4hu7huir951ehukvj62sssg38je.apps.googleusercontent.com",
           "client_type": 3

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../levels/levels_system_screen.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de configuración con todas las opciones
 class SettingsScreen extends StatefulWidget {
@@ -238,7 +239,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
       subtitle: const Text('usuario@stepwin.com'),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: const Icon(AppIcons.chevronRight),
       onTap: () => _showEditProfile(),
     );
   }
@@ -268,7 +269,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           fontSize: 14,
         ),
       ),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: const Icon(AppIcons.chevronRight),
       onTap: onTap,
     );
   }

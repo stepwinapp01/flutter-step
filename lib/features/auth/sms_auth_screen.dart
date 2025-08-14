@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../onboarding/simple_welcome_screen.dart';
 import 'auth_service.dart';
+import 'otp_verification_screen.dart';
 
 class SMSAuthScreen extends StatefulWidget {
   const SMSAuthScreen({super.key});
@@ -177,24 +179,47 @@ class _SMSAuthScreenState extends State<SMSAuthScreen> {
     setState(() => _loading = true);
 
     try {
-      final result = await AuthService.sendSMSCode(_phoneController.text.trim());
-      
-      if (mounted) {
-        setState(() => _loading = false);
-        
-        if (result['success'] == true) {
-          setState(() {
-            _verificationId = result['verificationId'];
-            _codeSent = true;
-          });
-        } else {
-          _showError('Error al enviar código: ${result['error']}');
-        }
-      }
+      await AuthService.verifyPhoneNumber(
+        phoneNumber: _phoneController.text.trim(),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          // Auto-verificación completada
+          final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+          if (mounted && userCredential.user != null) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const SimpleWelcomeScreen()),
+            );
+          }
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          if (mounted) {
+            setState(() => _loading = false);
+            if (e.code == 'operation-not-allowed') {
+              _showError('La autenticación por teléfono no está habilitada. Revisa Firebase Console.');
+            } else {
+              _showError('Error: ${e.message}');
+            }
+          }
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          if (mounted) {
+            setState(() => _loading = false);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => OtpVerificationScreen(verificationId: verificationId),
+              ),
+            );
+          }
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          _verificationId = verificationId;
+        },
+      );
     } catch (e) {
       if (mounted) {
         setState(() => _loading = false);
-        _showError('Error de conexión');
+        _showError('Error de conexión: $e');
       }
     }
   }

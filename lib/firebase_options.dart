@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC6J8uTbx7vdROH689NE0XmCLxL5tI43P8',
-    appId: '1:170951953370:android:6a92eb6c682c504dc90ee3',
+    appId: '1:170951953370:android:3d920296b9397edfc90ee3',
     messagingSenderId: '170951953370',
     projectId: 'stepwin-3f2c8',
     storageBucket: 'stepwin-3f2c8.firebasestorage.app',

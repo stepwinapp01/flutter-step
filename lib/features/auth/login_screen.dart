@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../onboarding/facial_recognition_screen.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de login con OAuth Google y datos personales
 class LoginScreen extends StatefulWidget {
@@ -144,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(AppIcons.arrowBack, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -212,20 +213,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 30),
                 
                 // Formulario
-                _buildTextField(_nameController, _getText('name'), Icons.person),
+                _buildTextField(_nameController, _getText('name'), AppIcons.person),
                 const SizedBox(height: 16),
-                _buildTextField(_emailController, _getText('email'), Icons.email, 
+                _buildTextField(_emailController, _getText('email'), AppIcons.email, 
                     keyboardType: TextInputType.emailAddress),
                 const SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
-                      child: _buildTextField(_heightController, _getText('height'), Icons.height,
+                      child: _buildTextField(_heightController, _getText('height'), AppIcons.height,
                           keyboardType: TextInputType.number),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: _buildTextField(_weightController, _getText('weight'), Icons.monitor_weight,
+                      child: _buildTextField(_weightController, _getText('weight'), AppIcons.monitorWeight,
                           keyboardType: TextInputType.number),
                     ),
                   ],
@@ -251,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
                 
                 const SizedBox(height: 16),
-                _buildTextField(_idController, _getText('idNumber'), Icons.badge),
+                _buildTextField(_idController, _getText('idNumber'), AppIcons.badge),
                 
                 const SizedBox(height: 24),
                 

@@ -8,29 +8,26 @@ import 'features/auth/google_auth_screen.dart';
 import 'features/coach/providers/chat_provider.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
-import 'core/utils/logger.dart';
+import 'firebase_init_screen.dart';
 
 /// Punto de entrada principal de la aplicación Step Win
 /// Inicializa la aplicación con manejo de errores global
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Inicializa Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
   // Manejo de errores de Flutter
   FlutterError.onError = (FlutterErrorDetails details) {
-    AppLogger.error(
-      'Flutter Error: ${details.exception}',
-      details.exception,
-      details.stack,
-      'FlutterError',
-    );
+    print('Flutter Error: ${details.exception}');
   };
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -38,28 +35,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ChatProvider()),
+    return MaterialApp(
+      title: 'Step Win App',
+      theme: AppTheme.lightTheme,
+
+      // Configuración de internacionalización
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      child: MaterialApp(
-        title: 'Step Win App',
-        theme: AppTheme.lightTheme,
+      supportedLocales: AppLocalizations.supportedLocales,
 
-        // Configuración de internacionalización
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
+      // Configuración de debug
+      debugShowCheckedModeBanner: false,
 
-        // Configuración de debug
-        debugShowCheckedModeBanner: false,
-
-        home: const GoogleAuthScreen(),
-      ),
+      home: const FirebaseInitScreen(),
     );
   }
 }

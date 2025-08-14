@@ -1,0 +1,25 @@
+🔑 SHA-1 ENCONTRADO PARA TU PROYECTO:
+
+SHA1: 2B:37:A7:EC:DD:63:FA:2F:CA:17:DB:80:FB:0F:FF:01:2D:F4:72:5C
+
+📋 PASOS PARA CONFIGURAR FIREBASE:
+
+1. Ve a Firebase Console: https://console.firebase.google.com
+2. Selecciona tu proyecto: stepwin-3f2c8
+3. Ve a Project Settings (⚙️) > General
+4. En "Your apps" busca tu app Android
+5. En "SHA certificate fingerprints" haz clic en "Add fingerprint"
+6. Pega este SHA-1: 2B:37:A7:EC:DD:63:FA:2F:CA:17:DB:80:FB:0F:FF:01:2D:F4:72:5C
+7. Haz clic en "Save"
+8. Descarga el nuevo google-services.json
+9. Reemplaza el archivo en: android/app/google-services.json
+
+⚠️ IMPORTANTE:
+- Este SHA-1 es específico para tu máquina de desarrollo
+- Cada desarrollador necesita agregar su propio SHA-1
+- Para producción necesitarás el SHA-1 del keystore de release
+
+🔄 DESPUÉS DE AGREGAR EL SHA-1:
+flutter clean
+flutter pub get
+flutter run

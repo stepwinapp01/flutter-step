@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../shared/services/mock_data_service.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de recompensas y tokens
 class RewardsScreen extends StatelessWidget {
@@ -49,7 +50,7 @@ class RewardsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Icon(
-                    Icons.stars,
+                    AppIcons.stars,
                     color: Colors.white,
                     size: 48,
                   ),
@@ -90,7 +91,7 @@ class RewardsScreen extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     'Retirar',
-                    Icons.account_balance_wallet,
+                    AppIcons.accountBalanceWallet,
                     const Color(0xFF10B981),
                     () {},
                   ),
@@ -99,7 +100,7 @@ class RewardsScreen extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     'Historial',
-                    Icons.history,
+                    AppIcons.history,
                     const Color(0xFF3B82F6),
                     () {},
                   ),
@@ -145,31 +146,31 @@ class RewardsScreen extends StatelessWidget {
             _buildEarnTokenItem(
               'Caminar 1,000 pasos',
               '10 tokens',
-              Icons.directions_walk,
+              AppIcons.directionsWalk,
               const Color(0xFF10B981),
             ),
             _buildEarnTokenItem(
               'Dormir 7+ horas',
               '50 tokens',
-              Icons.bedtime,
+              AppIcons.bedtime,
               const Color(0xFF3B82F6),
             ),
             _buildEarnTokenItem(
               'Beber 2L de agua',
               '30 tokens',
-              Icons.water_drop,
+              AppIcons.waterDrop,
               const Color(0xFF06B6D4),
             ),
             _buildEarnTokenItem(
               'Meditar 10 minutos',
               '40 tokens',
-              Icons.self_improvement,
+              AppIcons.selfImprovement,
               const Color(0xFF8B5CF6),
             ),
             _buildEarnTokenItem(
               'Chat con Coach Adán',
               '60 tokens',
-              Icons.psychology,
+              AppIcons.psychology,
               const Color(0xFF6B46C1),
             ),
           ],
@@ -272,7 +273,7 @@ class RewardsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
-              Icons.account_balance_wallet,
+              AppIcons.accountBalanceWallet,
               color: statusColor,
               size: 20,
             ),

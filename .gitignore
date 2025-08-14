@@ -51,6 +51,10 @@ android/app/release
 **/*.keystore
 **/*.jks
 
+# Firebase config files (contain sensitive data)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
 # ---------------------
 # iOS
 # ---------------------

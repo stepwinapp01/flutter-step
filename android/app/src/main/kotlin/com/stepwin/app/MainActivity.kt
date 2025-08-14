@@ -1,4 +1,4 @@
-package com.example.step_win_app
+package com.stepwin.app
 
 import io.flutter.embedding.android.FlutterActivity
 

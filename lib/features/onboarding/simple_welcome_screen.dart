@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../subscription/subscription_onboarding_screen.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de bienvenida ultra simple sin DropdownButton
 class SimpleWelcomeScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: selectedLanguage,
-                      icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF6B46C1)),
+                      icon: const Icon(AppIcons.chevronDown, color: Color(0xFF6B46C1)),
                       onChanged: (String? newValue) {
                         if (newValue != null) {
                           setState(() => selectedLanguage = newValue);

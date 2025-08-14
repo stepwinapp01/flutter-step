@@ -23,7 +23,27 @@ check_project_directory() {
     fi
 }
 
+# Función para verificar herramientas requeridas
+check_tools() {
+    log_info "🔍 Verificando herramientas requeridas..."
+    
+    if ! command -v flutter &> /dev/null; then
+        log_error "Flutter no está instalado o no está en PATH"
+        log_info "Instala Flutter desde: https://flutter.dev/docs/get-started/install"
+        exit 1
+    fi
+    
+    if ! command -v dart &> /dev/null; then
+        log_error "Dart no está instalado o no está en PATH"
+        log_info "Dart debería venir con Flutter. Verifica tu instalación."
+        exit 1
+    fi
+    
+    log_success "Herramientas verificadas correctamente"
+}
+
 log_info "🚀 Iniciando generación de assets para $PROJECT_NAME..."
+check_tools
 check_project_directory
 
 # Función para generar íconos
@@ -48,9 +68,6 @@ generate_splash() {
     fi
 }
 
-generate_icons
-generate_splash
-
 # Función para generar favicon
 generate_favicon() {
     if [ -d "web" ]; then
@@ -70,8 +87,6 @@ generate_favicon() {
     fi
 }
 
-generate_favicon
-
 # Función para limpiar y actualizar dependencias
 clean_and_update() {
     log_info "🧹 Limpiando cache..."
@@ -82,6 +97,11 @@ clean_and_update() {
         exit 1
     fi
 }
+
+# Ejecutar generación de assets
+generate_icons
+generate_splash
+generate_favicon
 
 # Función para mostrar resumen final
 show_summary() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../shared/services/mock_data_service.dart';
+import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de metas diarias
 class GoalsScreen extends StatelessWidget {
@@ -37,7 +38,7 @@ class GoalsScreen extends StatelessWidget {
               '${todayGoals.steps}',
               '${todayGoals.targetSteps}',
               todayGoals.steps / todayGoals.targetSteps,
-              Icons.directions_walk,
+              AppIcons.directionsWalk,
               const Color(0xFF10B981),
               'pasos',
             ),
@@ -47,7 +48,7 @@ class GoalsScreen extends StatelessWidget {
               '${todayGoals.sleepHours.toStringAsFixed(1)}h',
               '${todayGoals.targetSleepHours.toStringAsFixed(1)}h',
               todayGoals.sleepHours / todayGoals.targetSleepHours,
-              Icons.bedtime,
+              AppIcons.bedtime,
               const Color(0xFF3B82F6),
               'horas',
             ),
@@ -57,7 +58,7 @@ class GoalsScreen extends StatelessWidget {
               '${todayGoals.waterLiters.toStringAsFixed(1)}L',
               '${todayGoals.targetWaterLiters.toStringAsFixed(1)}L',
               todayGoals.waterLiters / todayGoals.targetWaterLiters,
-              Icons.water_drop,
+              AppIcons.waterDrop,
               const Color(0xFF06B6D4),
               'litros',
             ),
@@ -67,7 +68,7 @@ class GoalsScreen extends StatelessWidget {
               '${todayGoals.meditationMinutes} min',
               '${todayGoals.targetMeditationMinutes} min',
               todayGoals.meditationMinutes / todayGoals.targetMeditationMinutes,
-              Icons.self_improvement,
+              AppIcons.selfImprovement,
               const Color(0xFF8B5CF6),
               'minutos',
             ),
@@ -169,7 +170,7 @@ class GoalsScreen extends StatelessWidget {
                 ),
               ),
               if (progress >= 1.0)
-                Icon(Icons.check_circle, color: color, size: 16),
+                Icon(AppIcons.checkCircle, color: color, size: 16),
             ],
           ),
         ],
