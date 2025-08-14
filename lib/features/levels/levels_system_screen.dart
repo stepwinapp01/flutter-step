@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../onboarding/phone_registration_screen.dart';
-import '../../shared/constants/app_icons.dart';
+import '../onboarding/onboarding_flow.dart';
 
 /// Pantalla completa del sistema de niveles
 class LevelsSystemScreen extends StatefulWidget {
@@ -150,7 +149,7 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(AppIcons.arrowBack, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -246,12 +245,7 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
                     onPressed: _currentPage == levels.length - 1
                         ? () {
                             if (widget.isOnboarding) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const PhoneRegistrationScreen(language: 'es'),
-                                ),
-                              );
+                              OnboardingFlow.completeOnboarding(context);
                             } else {
                               Navigator.pop(context, true);
                             }

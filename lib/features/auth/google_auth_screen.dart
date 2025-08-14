@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GoogleAuthScreen extends StatefulWidget {
   const GoogleAuthScreen({super.key});
@@ -11,6 +13,8 @@ class GoogleAuthScreen extends StatefulWidget {
 
 class _GoogleAuthScreenState extends State<GoogleAuthScreen> {
   bool _isLoading = false;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _signInWithGoogle() async {
     setState(() {
@@ -18,14 +22,29 @@ class _GoogleAuthScreenState extends State<GoogleAuthScreen> {
     });
 
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      
+      if (googleUser == null) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await _auth.signInWithCredential(credential);
       
       setState(() {
         _isLoading = false;
       });
       
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Google Sign-In no implementado')),
+        const SnackBar(content: Text('Inicio de sesión exitoso')),
       );
     } catch (e) {
       setState(() {

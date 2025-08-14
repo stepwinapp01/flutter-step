@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../levels/levels_system_screen.dart';
+import '../onboarding/onboarding_flow.dart';
 
 /// Pantalla de suscripción obligatoria en el onboarding
 class SubscriptionOnboardingScreen extends StatefulWidget {
@@ -531,12 +532,7 @@ class _SubscriptionOnboardingScreenState extends State<SubscriptionOnboardingScr
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context); // Cerrar diálogo
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LevelsSystemScreen(isOnboarding: true),
-                    ),
-                  );
+                  OnboardingFlow.goToLevelsSystem(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: selectedPlan['color'],
