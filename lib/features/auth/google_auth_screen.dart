@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../onboarding/onboarding_flow.dart';
 
 class GoogleAuthScreen extends StatefulWidget {
   const GoogleAuthScreen({super.key});
@@ -43,9 +44,8 @@ class _GoogleAuthScreenState extends State<GoogleAuthScreen> {
         _isLoading = false;
       });
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Inicio de sesión exitoso')),
-      );
+      // Navegar al onboarding después del login exitoso
+      OnboardingFlow.startOnboarding(context);
     } catch (e) {
       setState(() {
         _isLoading = false;

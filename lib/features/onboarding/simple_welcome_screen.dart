@@ -132,7 +132,7 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    OnboardingFlow.goToSubscription(context);
+                    OnboardingFlow.goToNameRegistration(context, selectedLanguage);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF6B46C1),

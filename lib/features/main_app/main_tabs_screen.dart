@@ -7,7 +7,7 @@ import '../../screens/community_screen.dart';
 import '../coach/presentation/coach_adan_screen.dart';
 import 'wallet_screen.dart';
 import 'settings_screen.dart';
-import '../../shared/constants/app_icons.dart';
+
 
 /// Pantalla principal con 6 tabs de navegación
 class MainTabsScreen extends StatefulWidget {
@@ -87,14 +87,14 @@ class _MainTabsScreenState extends State<MainTabsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: Row(
               children: [
-                _buildNavItem(0, AppIcons.home, _getText('home')),
-                _buildNavItem(1, AppIcons.trackChanges, _getText('goals')),
-                _buildNavItem(2, AppIcons.stars, _getText('rewards')),
-                _buildNavItem(3, AppIcons.trendingUp, _getText('progress')),
-                _buildNavItem(4, AppIcons.group, _getText('community')),
-                _buildNavItem(5, AppIcons.accountBalanceWallet, _getText('wallet')),
-                _buildNavItem(6, AppIcons.psychology, _getText('coach')),
-                _buildNavItem(7, AppIcons.settings, _getText('settings')),
+                _buildNavItem(0, Icons.home, _getText('home')),
+                _buildNavItem(1, Icons.track_changes, _getText('goals')),
+                _buildNavItem(2, Icons.stars, _getText('rewards')),
+                _buildNavItem(3, Icons.trending_up, _getText('progress')),
+                _buildNavItem(4, Icons.group, _getText('community')),
+                _buildNavItem(5, Icons.account_balance_wallet, _getText('wallet')),
+                _buildNavItem(6, Icons.psychology, _getText('coach')),
+                _buildNavItem(7, Icons.settings, _getText('settings')),
               ],
             ),
           ),

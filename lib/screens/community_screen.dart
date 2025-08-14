@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../shared/constants/app_icons.dart';
+
 
 /// Pantalla de comunidad con feed social y equipos
 class CommunityScreen extends StatefulWidget {

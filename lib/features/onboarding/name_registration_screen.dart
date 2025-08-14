@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'phone_registration_screen.dart';
+import 'onboarding_flow.dart';
 import '../../shared/services/user_service.dart';
 
 class NameRegistrationScreen extends StatefulWidget {
@@ -183,11 +183,7 @@ class _NameRegistrationScreenState extends State<NameRegistrationScreen> {
       UserService().setUserName(_nameController.text.trim());
       
       // Continuar a la siguiente pantalla
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PhoneRegistrationScreen(language: widget.language),
-        ),
-      );
+      OnboardingFlow.goToAgeVerification(context, widget.language);
     }
   }
 
