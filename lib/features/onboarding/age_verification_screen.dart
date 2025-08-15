@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'onboarding_flow.dart';
+import '../../shared/widgets/onboarding_progress_indicator.dart';
+import 'fitness_goals_screen.dart';
 
 /// Pantalla de verificación de edad (16+ años requerido)
 class AgeVerificationScreen extends StatefulWidget {
@@ -93,20 +94,15 @@ class _AgeVerificationScreenState extends State<AgeVerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const OnboardingProgressIndicator(currentStep: 3, totalSteps: 13),
+              const SizedBox(height: 32),
               Text(
                 _getText('title'),
                 style: const TextStyle(
@@ -180,8 +176,12 @@ class _AgeVerificationScreenState extends State<AgeVerificationScreen> {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: canContinue ? () {
-                    final age = _calculateAge(selectedDate!);
-                    OnboardingFlow.goToFitnessAssessment(context, age);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FitnessGoalsScreen(),
+                      ),
+                    );
                   } : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF6B46C1),

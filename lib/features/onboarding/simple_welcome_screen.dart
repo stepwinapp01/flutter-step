@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 import '../auth/google_auth_screen.dart';
 import 'phone_registration_screen.dart';
 import '../../shared/widgets/primary_button.dart';
+import '../../shared/widgets/onboarding_progress_indicator.dart';
 
 /// Pantalla de bienvenida ultra simple sin DropdownButton
 class SimpleWelcomeScreen extends StatefulWidget {
@@ -24,6 +24,8 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
+              const OnboardingProgressIndicator(currentStep: 1, totalSteps: 13),
+              const SizedBox(height: 20),
               // Selector de idioma desplegable
               Align(
                 alignment: Alignment.topRight,
@@ -120,10 +122,10 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
               // Características
               Column(
                 children: [
-                  _buildFeature(HugeIcons.strokeRoundedFootsteps, selectedLanguage == 'es' ? 'Gana tokens por cada paso' : 'Earn tokens for every step'),
-                  _buildFeature(HugeIcons.strokeRoundedDollar01, selectedLanguage == 'es' ? 'Retira dinero real (USDT/USDC)' : 'Withdraw real money (USDT/USDC)'),
-                  _buildFeature(HugeIcons.strokeRoundedAiRobot, selectedLanguage == 'es' ? 'Coach IA personalizado' : 'Personalized AI Coach'),
-                  _buildFeature(HugeIcons.strokeRoundedUserGroup, selectedLanguage == 'es' ? 'Comunidad motivadora' : 'Motivating community'),
+                  _buildFeature(Icons.directions_walk, selectedLanguage == 'es' ? 'Gana tokens por cada paso' : 'Earn tokens for every step'),
+                  _buildFeature(Icons.monetization_on, selectedLanguage == 'es' ? 'Retira dinero real (USDT/USDC)' : 'Withdraw real money (USDT/USDC)'),
+                  _buildFeature(Icons.android, selectedLanguage == 'es' ? 'Coach IA personalizado' : 'Personalized AI Coach'),
+                  _buildFeature(Icons.group, selectedLanguage == 'es' ? 'Comunidad motivadora' : 'Motivating community'),
                 ],
               ),
               

@@ -117,8 +117,15 @@ class AuthGate extends StatelessWidget {
   
   Future<String> _checkUserStatus() async {
     try {
-      final hasCompletedOnboarding = await UserService.hasCompletedOnboarding();
-      if (!hasCompletedOnboarding) {
+      // Verificar si el usuario existe en Firestore
+      final user = await UserService.getUserProfile();
+      
+      if (user == null) {
+        // Usuario no existe en Firestore, necesita onboarding
+        return 'onboarding';
+      }
+      
+      if (!user.hasCompletedOnboarding) {
         return 'onboarding';
       }
       
@@ -136,9 +143,8 @@ class AuthGate extends StatelessWidget {
       return 'dashboard';
     } catch (e) {
       print('Error checking user status: $e');
-      // En caso de error, ir al dashboard si ya completó onboarding
-      final hasCompletedOnboarding = await UserService.hasCompletedOnboarding();
-      return hasCompletedOnboarding ? 'dashboard' : 'onboarding';
+      // En caso de error, asumir que necesita onboarding
+      return 'onboarding';
     }
   }
 }

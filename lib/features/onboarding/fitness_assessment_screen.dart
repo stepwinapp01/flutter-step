@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../shared/widgets/onboarding_progress_indicator.dart';
 import '../../core/constants/app_constants.dart';
 import '../../shared/models/fitness_profile_model.dart';
 import '../../shared/services/coach_ai_service.dart';
-import 'coach_plan_screen.dart';
+import 'current_habits_screen.dart';
 
 /// Pantalla de evaluación física inicial
 class FitnessAssessmentScreen extends StatefulWidget {
@@ -30,14 +31,14 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
     if (widget.age != null) {
       _ageController.text = widget.age.toString();
     }
+    
+    // Agregar listeners para actualizar el estado
+    _weightController.addListener(() => setState(() {}));
+    _heightController.addListener(() => setState(() {}));
+    _ageController.addListener(() => setState(() {}));
   }
   String _activityLevel = 'sedentary';
-  int _screenTimeHours = 8;
-  int _currentWaterGlasses = 6;
-  double _currentSleepHours = 6.0;
-  int _currentWalkingMinutes = 15;
-  int _currentMeditationMinutes = 0;
-  final List<String> _healthConditions = [];
+
 
   @override
   void dispose() {
@@ -52,34 +53,14 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Evaluación Física'),
-        backgroundColor: AppConstants.primaryPurple,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          // Indicador de progreso
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: List.generate(4, (index) {
-                return Expanded(
-                  child: Container(
-                    height: 4,
-                    margin: EdgeInsets.only(right: index < 3 ? 8 : 0),
-                    decoration: BoxDecoration(
-                      color: index <= _currentPage 
-                          ? AppConstants.primaryPurple 
-                          : Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                );
-              }),
+
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: const OnboardingProgressIndicator(currentStep: 4, totalSteps: 13),
             ),
-          ),
           
           // Contenido de las páginas
           Expanded(
@@ -89,8 +70,6 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
               children: [
                 _buildBasicInfoPage(),
                 _buildActivityLevelPage(),
-                _buildHabitsPage(),
-                _buildHealthConditionsPage(),
               ],
             ),
           ),
@@ -113,16 +92,16 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
                 if (_currentPage > 0) const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: _currentPage == 3 ? _generatePlan : () => _pageController.nextPage(
+                    onPressed: _canContinue() ? (_currentPage == 1 ? _generatePlan : () => _pageController.nextPage(
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
-                    ),
+                    )) : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppConstants.primaryPurple,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     child: Text(
-                      _currentPage == 3 ? 'Generar Mi Plan' : 'Siguiente',
+                      _currentPage == 1 ? 'Continuar' : 'Siguiente',
                       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -130,7 +109,8 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
               ],
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -232,163 +212,20 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
     );
   }
 
-  Widget _buildHabitsPage() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '⏰ Hábitos Actuales',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Cuéntame sobre tus hábitos diarios actuales.',
-            style: TextStyle(color: Colors.grey, fontSize: 16),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.blue.shade50,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.blue.shade200),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.info_outline, color: Colors.blue.shade600, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Desliza las barras para ajustar cada valor según tus hábitos actuales',
-                    style: TextStyle(
-                      color: Colors.blue.shade700,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          
-          Text('📱 Tiempo de pantalla diario: ${_screenTimeHours}h'),
-          Slider(
-            value: _screenTimeHours.toDouble(),
-            min: 2,
-            max: 16,
-            divisions: 14,
-            onChanged: (value) => setState(() => _screenTimeHours = value.round()),
-            activeColor: AppConstants.primaryPurple,
-          ),
-          const SizedBox(height: 24),
-          
-          Text('💧 Vasos de agua al día: $_currentWaterGlasses vasos'),
-          Slider(
-            value: _currentWaterGlasses.toDouble(),
-            min: 2,
-            max: 12,
-            divisions: 10,
-            onChanged: (value) => setState(() => _currentWaterGlasses = value.round()),
-            activeColor: AppConstants.primaryPurple,
-          ),
-          const SizedBox(height: 24),
-          
-          Text('😴 Horas de sueño actuales: ${_currentSleepHours.toStringAsFixed(1)}h'),
-          Slider(
-            value: _currentSleepHours,
-            min: 4.0,
-            max: 12.0,
-            divisions: 16,
-            onChanged: (value) => setState(() => _currentSleepHours = value),
-            activeColor: AppConstants.primaryPurple,
-          ),
-          const SizedBox(height: 24),
-          
-          Text('🚶 Minutos de caminata diarios: $_currentWalkingMinutes min'),
-          Slider(
-            value: _currentWalkingMinutes.toDouble(),
-            min: 0,
-            max: 120,
-            divisions: 24,
-            onChanged: (value) => setState(() => _currentWalkingMinutes = value.round()),
-            activeColor: AppConstants.primaryPurple,
-          ),
-          const SizedBox(height: 24),
-          
-          Text('🙏 Tiempo de oración/meditación: $_currentMeditationMinutes min'),
-          Slider(
-            value: _currentMeditationMinutes.toDouble(),
-            min: 0,
-            max: 60,
-            divisions: 12,
-            onChanged: (value) => setState(() => _currentMeditationMinutes = value.round()),
-            activeColor: AppConstants.primaryPurple,
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildHealthConditionsPage() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '🏥 Condiciones de Salud',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Selecciona cualquier condición que tengas (opcional).',
-            style: TextStyle(color: Colors.grey, fontSize: 16),
-          ),
-          const SizedBox(height: 32),
-          
-          ...[
-            'Diabetes',
-            'Hipertensión',
-            'Problemas cardíacos',
-            'Problemas articulares',
-            'Asma',
-            'Lesiones previas',
-            'Ninguna',
-          ].map((condition) => CheckboxListTile(
-            value: _healthConditions.contains(condition),
-            onChanged: (checked) {
-              setState(() {
-                if (condition == 'Ninguna') {
-                  _healthConditions.clear();
-                  if (checked!) _healthConditions.add(condition);
-                } else {
-                  _healthConditions.remove('Ninguna');
-                  if (checked!) {
-                    _healthConditions.add(condition);
-                  } else {
-                    _healthConditions.remove(condition);
-                  }
-                }
-              });
-            },
-            title: Text(condition),
-            activeColor: AppConstants.primaryPurple,
-          )).toList(),
-        ],
-      ),
-    );
+
+
+
+  bool _canContinue() {
+    if (_currentPage == 0) {
+      return _weightController.text.isNotEmpty && 
+             _heightController.text.isNotEmpty && 
+             _ageController.text.isNotEmpty;
+    }
+    return true; // Página 1 siempre puede continuar
   }
 
   void _generatePlan() {
-    if (_weightController.text.isEmpty || _heightController.text.isEmpty || _ageController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor completa la información básica')),
-      );
-      return;
-    }
 
     // Mostrar loading
     showDialog(
@@ -409,19 +246,19 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
         height: double.parse(_heightController.text),
         age: int.parse(_ageController.text),
         activityLevel: _activityLevel,
-        screenTimeHours: _screenTimeHours,
-        currentWaterGlasses: _currentWaterGlasses,
-        currentSleepHours: _currentSleepHours,
-        currentWalkingMinutes: _currentWalkingMinutes,
-        currentMeditationMinutes: _currentMeditationMinutes,
-        healthConditions: _healthConditions,
+        screenTimeHours: 8,
+        currentWaterGlasses: 6,
+        currentSleepHours: 6.0,
+        currentWalkingMinutes: 15,
+        currentMeditationMinutes: 0,
+        healthConditions: [],
         createdAt: DateTime.now(),
       );
 
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CoachPlanScreen(medicalConditions: _healthConditions),
+          builder: (context) => const CurrentHabitsScreen(),
         ),
       );
     });

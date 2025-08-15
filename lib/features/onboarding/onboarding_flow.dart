@@ -14,19 +14,21 @@ import '../main_app/main_tabs_screen.dart';
 
 /// Flujo completo de onboarding de Step Win App
 /// 
-/// Flujo completo:
+/// Flujo completo de 13 pasos:
 /// 1. SimpleWelcomeScreen - Bienvenida y selección de idioma
 /// 2. PhoneRegistrationScreen - Registro de nombre y teléfono con SMS
 /// 3. AgeVerificationScreen - Verificación de edad (16+)
 /// 4. FitnessAssessmentScreen - Evaluación física completa
 /// 5. MedicalInfoScreen - Información médica
-/// 6. CoachPlanScreen - Plan personalizado del Coach Adán
-/// 7. SubscriptionOnboardingScreen - Selección de plan de suscripción
-/// 8. LevelsSystemScreen - Explicación del sistema de niveles
-/// 9. LevelTermsScreen - Términos y condiciones
-/// 10. DeviceConnectionScreen - Conexión de dispositivos
-/// 11. FaceVerificationScreen - Verificación facial
-/// 12. MainTabsScreen - Aplicación principal
+/// 6. FitnessGoalsScreen - Selección de objetivos fitness
+/// 7. CoachPlanScreen - Plan personalizado del Coach Adán
+/// 8. SubscriptionOnboardingScreen - Selección de plan de suscripción
+/// 9. LevelsSystemScreen - Explicación del sistema de niveles
+/// 10. PlanSelectionScreen - Selección de plan de pago
+/// 11. LevelTermsScreen - Términos y condiciones
+/// 12. DeviceConnectionScreen - Conexión de dispositivos
+/// 13. FaceVerificationScreen - Verificación facial
+/// 14. MainTabsScreen - Aplicación principal
 class OnboardingFlow {
   static void startOnboarding(BuildContext context) {
     Navigator.of(context).pushReplacement(

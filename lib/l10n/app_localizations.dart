@@ -44,6 +44,15 @@ class AppLocalizations {
   String get sleep => _localizedValues[locale.languageCode]!['sleep']!;
   String get water => _localizedValues[locale.languageCode]!['water']!;
   String get meditation => _localizedValues[locale.languageCode]!['meditation']!;
+  String get wallet => _localizedValues[locale.languageCode]!['wallet']!;
+  String get settings => _localizedValues[locale.languageCode]!['settings']!;
+  String get todayProgress => _localizedValues[locale.languageCode]!['todayProgress']!;
+  String get quickActions => _localizedValues[locale.languageCode]!['quickActions']!;
+  String get logSteps => _localizedValues[locale.languageCode]!['logSteps']!;
+  String get logWater => _localizedValues[locale.languageCode]!['logWater']!;
+  String get meditate => _localizedValues[locale.languageCode]!['meditate']!;
+  String get chatCoach => _localizedValues[locale.languageCode]!['chatCoach']!;
+  String get viewAll => _localizedValues[locale.languageCode]!['viewAll']!;
   
   // Mensajes de error
   String get errorEmptyMessage => _localizedValues[locale.languageCode]!['errorEmptyMessage']!;
@@ -73,6 +82,15 @@ class AppLocalizations {
       'sleep': 'Sueño',
       'water': 'Agua',
       'meditation': 'Meditación',
+      'wallet': 'Billetera',
+      'settings': 'Ajustes',
+      'todayProgress': 'Progreso de Hoy',
+      'quickActions': 'Acciones Rápidas',
+      'logSteps': 'Registrar Pasos',
+      'logWater': 'Registrar Agua',
+      'meditate': 'Meditar',
+      'chatCoach': 'Chat con Coach',
+      'viewAll': 'Ver Todo',
       'errorEmptyMessage': 'El mensaje no puede estar vacío',
       'errorMessageTooLong': 'El mensaje es demasiado largo (máximo 500 caracteres)',
       'errorGeneratingResponse': 'Error al generar respuesta. Inténtalo de nuevo.',
@@ -98,6 +116,15 @@ class AppLocalizations {
       'sleep': 'Sleep',
       'water': 'Water',
       'meditation': 'Meditation',
+      'wallet': 'Wallet',
+      'settings': 'Settings',
+      'todayProgress': 'Today\'s Progress',
+      'quickActions': 'Quick Actions',
+      'logSteps': 'Log Steps',
+      'logWater': 'Log Water',
+      'meditate': 'Meditate',
+      'chatCoach': 'Chat with Coach',
+      'viewAll': 'View All',
       'errorEmptyMessage': 'Message cannot be empty',
       'errorMessageTooLong': 'Message is too long (maximum 500 characters)',
       'errorGeneratingResponse': 'Error generating response. Please try again.',

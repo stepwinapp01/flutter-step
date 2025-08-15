@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../shared/widgets/onboarding_progress_indicator.dart';
 import '../main_app/main_tabs_screen.dart';
 import '../../shared/services/user_service.dart';
 
@@ -21,6 +22,11 @@ class _FaceVerificationScreenState extends State<FaceVerificationScreen> {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
+              const OnboardingProgressIndicator(
+                currentStep: 13, 
+                totalSteps: 13,
+              ),
+              const SizedBox(height: 20),
               const Spacer(),
               
               const Text(
@@ -134,14 +140,20 @@ class _FaceVerificationScreenState extends State<FaceVerificationScreen> {
       if (mounted) {
         try {
           // Marcar onboarding como completado
-          await UserService.markOnboardingComplete();
+          await UserService().completeOnboarding();
           
-          // Verificar que se guardó correctamente
-          final isComplete = await UserService.hasCompletedOnboarding();
-          print('Onboarding completed: $isComplete');
-          
-          if (isComplete) {
-            // Navegar al dashboard principal
+          // Navegar al dashboard principal
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MainTabsScreen(),
+            ),
+            (route) => false,
+          );
+        } catch (e) {
+          print('Error completing onboarding: $e');
+          // Forzar navegación al dashboard de todos modos
+          if (mounted) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -149,33 +161,6 @@ class _FaceVerificationScreenState extends State<FaceVerificationScreen> {
               ),
               (route) => false,
             );
-          } else {
-            throw Exception('No se pudo completar el onboarding');
-          }
-        } catch (e) {
-          print('Error completing onboarding: $e');
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error al completar el registro. Reintentando...'),
-                backgroundColor: Colors.orange,
-                action: SnackBarAction(
-                  label: 'Continuar',
-                  textColor: Colors.white,
-                  onPressed: () {
-                    // Forzar navegación al dashboard
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainTabsScreen(),
-                      ),
-                      (route) => false,
-                    );
-                  },
-                ),
-              ),
-            );
-            setState(() => _isScanning = false);
           }
         }
       }

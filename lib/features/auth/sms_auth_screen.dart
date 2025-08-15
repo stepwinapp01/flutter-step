@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../onboarding/simple_welcome_screen.dart';
 import 'auth_service.dart';
-import 'otp_verification_screen.dart';
+
 
 class SMSAuthScreen extends StatefulWidget {
   const SMSAuthScreen({super.key});
@@ -182,7 +182,6 @@ class _SMSAuthScreenState extends State<SMSAuthScreen> {
       await AuthService.verifyPhoneNumber(
         phoneNumber: _phoneController.text.trim(),
         verificationCompleted: (PhoneAuthCredential credential) async {
-          // Auto-verificación completada
           final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
           if (mounted && userCredential.user != null) {
             Navigator.pushReplacement(
@@ -203,13 +202,11 @@ class _SMSAuthScreenState extends State<SMSAuthScreen> {
         },
         codeSent: (String verificationId, int? resendToken) {
           if (mounted) {
-            setState(() => _loading = false);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => OtpVerificationScreen(verificationId: verificationId),
-              ),
-            );
+            setState(() {
+              _loading = false;
+              _codeSent = true;
+              _verificationId = verificationId;
+            });
           }
         },
         codeAutoRetrievalTimeout: (String verificationId) {

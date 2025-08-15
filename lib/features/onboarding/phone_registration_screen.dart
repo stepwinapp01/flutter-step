@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../shared/models/user_model.dart';
-import 'age_verification_screen.dart';
+import '../../shared/widgets/onboarding_progress_indicator.dart';
+import 'personal_info_screen.dart';
 import '../../shared/data/countries_data.dart';
 import '../../shared/services/user_service.dart';
 
@@ -119,20 +120,15 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const OnboardingProgressIndicator(currentStep: 2, totalSteps: 13),
+              const SizedBox(height: 32),
               Text(
                 _getText('title'),
                 style: const TextStyle(
@@ -618,11 +614,12 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
       );
       
       await UserService.saveUserProfile(newUser);
+      print('User profile saved: ${newUser.name}');
       
       if (mounted) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => AgeVerificationScreen(language: widget.language),
+            builder: (context) => const PersonalInfoScreen(),
           ),
         );
       }
@@ -633,7 +630,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
         // Continuar de todos modos
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => AgeVerificationScreen(language: widget.language),
+            builder: (context) => const PersonalInfoScreen(),
           ),
         );
       }

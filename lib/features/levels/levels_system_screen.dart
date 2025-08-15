@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../onboarding/onboarding_flow.dart';
+import '../../shared/widgets/onboarding_progress_indicator.dart';
+import '../payment/plan_selection_screen.dart';
 
-/// Pantalla completa del sistema de niveles
 class LevelsSystemScreen extends StatefulWidget {
   final bool isOnboarding;
   
@@ -18,460 +18,358 @@ class _LevelsSystemScreenState extends State<LevelsSystemScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, dynamic>> levels = [
+  final List<Map<String, dynamic>> _levels = [
     {
       'level': 1,
-      'name': 'Semilla',
-      'description': 'El comienzo de tu transformación',
-      'subscription': '\$11 USD',
-      'members': '0 miembros activos',
-      'monthly': '\$0 ganancia mensual',
-      'bonus': '\$0 bono cumplimiento',
-      'equipment': 'No aplica',
+      'name': 'Despertar',
+      'description': 'Primeros pasos en tu viaje de transformación',
       'color': const Color(0xFF10B981),
-      'icon': '🌱',
+      'icon': Icons.wb_sunny,
+      'requirements': '1,000 pasos diarios',
+      'rewards': '10 tokens por día',
     },
     {
       'level': 2,
-      'name': 'Explorador',
-      'description': 'Descubriendo nuevas posibilidades',
-      'subscription': '\$11 USD',
-      'members': '3 miembros activos',
-      'monthly': '\$5 ganancia mensual',
-      'bonus': 'Hasta \$2',
-      'equipment': 'Hasta \$3',
-      'color': Color(0xFF3B82F6),
-      'icon': '🔍',
+      'name': 'Explorar',
+      'description': 'Descubre nuevas posibilidades',
+      'color': const Color(0xFF3B82F6),
+      'icon': Icons.explore,
+      'requirements': '3,000 pasos diarios',
+      'rewards': '25 tokens por día',
     },
     {
       'level': 3,
-      'name': 'Despertar',
-      'description': 'Despertando tu potencial',
-      'subscription': '\$18 USD',
-      'members': '5 miembros activos',
-      'monthly': '\$15 ganancia mensual',
-      'bonus': 'Hasta \$5',
-      'equipment': 'Hasta \$10',
-      'color': Color(0xFF8B5CF6),
-      'icon': '🌅',
+      'name': 'Construir',
+      'description': 'Forma hábitos sólidos y duraderos',
+      'color': const Color(0xFF8B5CF6),
+      'icon': Icons.build,
+      'requirements': '5,000 pasos diarios',
+      'rewards': '50 tokens por día',
     },
     {
       'level': 4,
-      'name': 'Ascenso',
-      'description': 'Elevando tu nivel de vida',
-      'subscription': '\$18 USD',
-      'members': '10 miembros activos',
-      'monthly': '\$30 ganancia mensual',
-      'bonus': 'Hasta \$8',
-      'equipment': 'Hasta \$15',
-      'color': Color(0xFFF59E0B),
-      'icon': '⬆️',
+      'name': 'Florecer',
+      'description': 'Tu crecimiento se hace visible',
+      'color': const Color(0xFFEC4899),
+      'icon': Icons.local_florist,
+      'requirements': '7,500 pasos diarios',
+      'rewards': '75 tokens por día',
     },
     {
       'level': 5,
-      'name': 'Sabio',
-      'description': 'Sabiduría y conocimiento',
-      'subscription': '\$25 USD',
-      'members': '20 miembros activos',
-      'monthly': '\$50 ganancia mensual',
-      'bonus': 'Hasta \$12',
-      'equipment': 'Hasta \$25',
-      'color': Color(0xFF6366F1),
-      'icon': '🧙‍♂️',
+      'name': 'Brillar',
+      'description': 'Alcanza la excelencia en tus hábitos',
+      'color': const Color(0xFFF59E0B),
+      'icon': Icons.star,
+      'requirements': '10,000 pasos diarios',
+      'rewards': '100 tokens por día',
     },
     {
       'level': 6,
-      'name': 'Líder',
-      'description': 'Liderando con el ejemplo',
-      'subscription': '\$25 USD',
-      'members': '30 miembros activos',
-      'monthly': '\$75 ganancia mensual',
-      'bonus': 'Hasta \$18',
-      'equipment': 'Hasta \$35',
-      'color': Color(0xFFEF4444),
-      'icon': '👑',
+      'name': 'Trascender',
+      'description': 'Supera tus propios límites',
+      'color': const Color(0xFF6366F1),
+      'icon': Icons.trending_up,
+      'requirements': '12,500 pasos diarios',
+      'rewards': '150 tokens por día',
     },
     {
       'level': 7,
-      'name': 'Maestro',
-      'description': 'Maestría en todos los aspectos',
-      'subscription': '\$25 USD',
-      'members': '50 miembros activos',
-      'monthly': '\$100 ganancia mensual',
-      'bonus': 'Hasta \$25',
-      'equipment': 'Hasta \$50',
-      'color': Color(0xFF7C3AED),
-      'icon': '🎓',
-    },
-    {
-      'level': 8,
-      'name': 'Guerrero',
-      'description': 'Fuerza y determinación',
-      'subscription': '\$25 USD',
-      'members': '80 miembros activos',
-      'monthly': '\$150 ganancia mensual',
-      'bonus': 'Hasta \$35',
-      'equipment': 'Hasta \$80',
-      'color': Color(0xFFDC2626),
-      'icon': '⚔️',
-    },
-    {
-      'level': 9,
-      'name': 'Campeón',
-      'description': 'Campeón de la transformación',
-      'subscription': '\$25 USD',
-      'members': '90 miembros activos',
-      'monthly': '\$200 ganancia mensual',
-      'bonus': 'Hasta \$50',
-      'equipment': 'Hasta \$100',
-      'color': Color(0xFFF59E0B),
-      'icon': '🏆',
-    },
-    {
-      'level': 10,
-      'name': 'Gladiador',
-      'description': 'El nivel más alto de maestría',
-      'subscription': '\$25 USD',
-      'members': '100 miembros activos',
-      'monthly': '\$300 ganancia mensual',
-      'bonus': 'Hasta \$75',
-      'equipment': 'Hasta \$150',
-      'color': Color(0xFF059669),
-      'icon': '🏛️',
+      'name': 'Leyenda',
+      'description': 'Únete a la élite de Step Win',
+      'color': const Color(0xFFDC2626),
+      'icon': Icons.emoji_events,
+      'requirements': '15,000 pasos diarios',
+      'rewards': '200 tokens por día',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1F2937),
-      appBar: widget.isOnboarding ? null : AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'Sistema de Niveles',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: Column(
-        children: [
-          if (widget.isOnboarding) ...[
-            const SizedBox(height: 60),
-            const Text(
-              '🎯 Sistema de Niveles',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            if (widget.isOnboarding) ...[
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: const OnboardingProgressIndicator(currentStep: 9, totalSteps: 13),
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Conoce los 10 niveles de transformación',
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.8),
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 30),
-          ],
-          
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              onPageChanged: (index) => setState(() => _currentPage = index),
-              itemCount: levels.length,
-              itemBuilder: (context, index) {
-                final level = levels[index];
-                return _buildLevelCard(level);
-              },
-            ),
-          ),
-          
-          // Indicadores de página
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              levels.length,
-              (index) => Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: _currentPage == index ? 12 : 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: _currentPage == index 
-                      ? Colors.white 
-                      : Colors.white.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(4),
+            ] else ...[
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                title: const Text(
+                  'Sistema de Niveles',
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-          ),
-          
-          const SizedBox(height: 20),
-          
-          // Botones de navegación
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                if (_currentPage > 0)
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => _pageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.white),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: const Text(
-                        'Anterior',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                
-                if (_currentPage > 0) const SizedBox(width: 16),
-                
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _currentPage == levels.length - 1
-                        ? () {
-                            if (widget.isOnboarding) {
-                              OnboardingFlow.completeOnboarding(context);
-                            } else {
-                              Navigator.pop(context, true);
-                            }
-                          }
-                        : () => _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFF1F2937),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: Text(
-                      _currentPage == levels.length - 1 
-                          ? (widget.isOnboarding ? 'Continuar' : 'Cerrar')
-                          : 'Siguiente',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLevelCard(Map<String, dynamic> level) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      child: Card(
-        elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                level['color'],
-                level['color'].withOpacity(0.8),
-              ],
-            ),
-          ),
-          padding: const EdgeInsets.all(24),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-              // Header del nivel
-              Row(
+            ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    level['icon'],
-                    style: const TextStyle(fontSize: 40),
+                  const Text(
+                    'Sistema de Niveles',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1F2937),
+                    ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Nivel ${level['level']}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Text(
-                          level['name'],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Progresa a través de 10 niveles únicos y desbloquea recompensas increíbles',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF6B7280),
                     ),
                   ),
                 ],
               ),
-              
-              const SizedBox(height: 16),
-              
-              // Descripción
-              Text(
-                level['description'],
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.9),
-                  fontSize: 16,
-                ),
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) => setState(() => _currentPage = index),
+                itemCount: _levels.length,
+                itemBuilder: (context, index) {
+                  final level = _levels[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: level['color'].withOpacity(0.1),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: level['color'],
+                              width: 3,
+                            ),
+                          ),
+                          child: Icon(
+                            level['icon'],
+                            size: 60,
+                            color: level['color'],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'Nivel ${level['level']}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: level['color'],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          level['name'],
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1F2937),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          level['description'],
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF6B7280),
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.grey.shade200),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.flag,
+                                    color: level['color'],
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    'Requisito:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF374151),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    level['requirements'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF1F2937),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.monetization_on,
+                                    color: level['color'],
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    'Recompensa:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF374151),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    level['rewards'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF1F2937),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              
-              const SizedBox(height: 24),
-              
-              // Información organizada en columnas
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    // Primera fila - Suscripción y Miembros
+            ),
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      _levels.length,
+                      (index) => Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentPage == index
+                              ? const Color(0xFF6B46C1)
+                              : Colors.grey.shade300,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  if (widget.isOnboarding) ...[
                     Row(
                       children: [
-                        Expanded(
-                          child: _buildInfoColumn(
-                            '💳',
-                            'Suscripción',
-                            level['subscription'],
+                        if (_currentPage > 0)
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => _pageController.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: const Text('Anterior'),
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: 1,
-                          height: 50,
-                          color: Colors.white.withOpacity(0.3),
-                        ),
+                        if (_currentPage > 0) const SizedBox(width: 16),
                         Expanded(
-                          child: _buildInfoColumn(
-                            '👥',
-                            'Miembros',
-                            level['members'],
+                          child: ElevatedButton(
+                            onPressed: _currentPage == _levels.length - 1
+                                ? _continue
+                                : () => _pageController.nextPage(
+                                      duration: const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                    ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF6B46C1),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              _currentPage == _levels.length - 1
+                                  ? 'Continuar'
+                                  : 'Siguiente',
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Línea divisoria
-                    Container(
-                      height: 1,
-                      color: Colors.white.withOpacity(0.3),
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Segunda fila - Ganancia y Bonos
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildInfoColumn(
-                            '💰',
-                            'Ganancia',
-                            level['monthly'],
+                  ] else ...[
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF6B46C1),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        Container(
-                          width: 1,
-                          height: 50,
-                          color: Colors.white.withOpacity(0.3),
+                        child: const Text(
+                          'Entendido',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                         ),
-                        Expanded(
-                          child: _buildInfoColumn(
-                            '🎁',
-                            'Bono Cumplimiento',
-                            level['bonus'],
-                          ),
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Línea divisoria
-                    Container(
-                      height: 1,
-                      color: Colors.white.withOpacity(0.3),
-                    ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    // Tercera fila - Bono Equipo (centrado)
-                    _buildInfoColumn(
-                      '🏋️',
-                      'Bono Equipo',
-                      level['equipment'],
+                      ),
                     ),
                   ],
-                ),
+                ],
               ),
-              
-              const SizedBox(height: 20),
-              ],
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoColumn(String icon, String label, String value) {
-    return Column(
-      children: [
-        Text(
-          icon,
-          style: const TextStyle(fontSize: 24),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
+  void _continue() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PlanSelectionScreen(language: 'es'),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }
