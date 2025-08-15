@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import '../auth/google_auth_screen.dart';
 import 'phone_registration_screen.dart';
 import '../../shared/widgets/primary_button.dart';
@@ -119,10 +120,10 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
               // Características
               Column(
                 children: [
-                  _buildFeature('🚶', selectedLanguage == 'es' ? 'Gana tokens por cada paso' : 'Earn tokens for every step'),
-                  _buildFeature('💰', selectedLanguage == 'es' ? 'Retira dinero real (USDT/USDC)' : 'Withdraw real money (USDT/USDC)'),
-                  _buildFeature('🤖', selectedLanguage == 'es' ? 'Coach IA personalizado' : 'Personalized AI Coach'),
-                  _buildFeature('👥', selectedLanguage == 'es' ? 'Comunidad motivadora' : 'Motivating community'),
+                  _buildFeature(HugeIcons.strokeRoundedWalk, selectedLanguage == 'es' ? 'Gana tokens por cada paso' : 'Earn tokens for every step'),
+                  _buildFeature(HugeIcons.strokeRoundedMoney04, selectedLanguage == 'es' ? 'Retira dinero real (USDT/USDC)' : 'Withdraw real money (USDT/USDC)'),
+                  _buildFeature(HugeIcons.strokeRoundedAiRobot, selectedLanguage == 'es' ? 'Coach IA personalizado' : 'Personalized AI Coach'),
+                  _buildFeature(HugeIcons.strokeRoundedUserGroup, selectedLanguage == 'es' ? 'Comunidad motivadora' : 'Motivating community'),
                 ],
               ),
               
@@ -146,12 +147,12 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
     );
   }
 
-  Widget _buildFeature(String emoji, String text) {
+  Widget _buildFeature(IconData icon, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 20)),
+          Icon(icon, size: 20, color: const Color(0xFF6B46C1)),
           const SizedBox(width: 12),
           Expanded(
             child: Text(

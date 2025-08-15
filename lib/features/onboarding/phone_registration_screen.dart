@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hugeicons/hugeicons.dart';
 import '../../shared/models/user_model.dart';
 import 'age_verification_screen.dart';
 import '../../shared/data/countries_data.dart';
@@ -159,7 +160,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   labelText: _getText('fullName'),
-                  prefixIcon: const Icon(Icons.person),
+                  prefixIcon: const Icon(HugeIcons.strokeRoundedUser),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -209,7 +210,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.male,
+                              HugeIcons.strokeRoundedMale,
                               color: _selectedGender == 'male' 
                                   ? const Color(0xFF6B46C1) 
                                   : Colors.grey.shade600,
@@ -253,7 +254,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.female,
+                              HugeIcons.strokeRoundedFemale,
                               color: _selectedGender == 'female' 
                                   ? const Color(0xFF6B46C1) 
                                   : Colors.grey.shade600,

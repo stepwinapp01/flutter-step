@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import '../main_app/main_tabs_screen.dart';
 import '../../shared/services/user_service.dart';
 
@@ -78,7 +79,7 @@ class _FaceVerificationScreenState extends State<FaceVerificationScreen> {
                           ],
                         )
                       : Icon(
-                          Icons.face,
+                          HugeIcons.strokeRoundedFaceId,
                           size: 120,
                           color: Colors.white.withOpacity(0.7),
                         ),
