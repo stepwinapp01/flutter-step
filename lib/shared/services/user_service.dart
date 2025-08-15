@@ -1,67 +1,71 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../models/user_model.dart';
+
 class UserService {
-  static final UserService _instance = UserService._internal();
-  factory UserService() => _instance;
-  UserService._internal();
-
-  String _userName = 'Usuario';
-  String _userEmail = '';
-  String _userPhone = '';
-  DateTime? _birthDate;
-  String _gender = 'Hombre';
-  double _weight = 0;
-  double _height = 0;
-  List<String> _medicalConditions = [];
-
-  // Getters
-  String get userName => _userName;
-  String get userEmail => _userEmail;
-  String get userPhone => _userPhone;
-  DateTime? get birthDate => _birthDate;
-  String get gender => _gender;
-  double get weight => _weight;
-  double get height => _height;
-  List<String> get medicalConditions => _medicalConditions;
-
-  // Setters
-  void setUserName(String name) {
-    _userName = name;
+  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  
+  static Future<void> saveUserProfile(UserModel user) async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      await _firestore.collection('users').doc(currentUser.uid).set(user.toJson());
+    }
   }
   
-  void setUserData({
-    required String name,
-    required String email,
-    required String phone,
-    required DateTime birthDate,
-    required String gender,
-    required double weight,
-    required double height,
-  }) {
-    _userName = name;
-    _userEmail = email;
-    _userPhone = phone;
-    _birthDate = birthDate;
-    _gender = gender;
-    _weight = weight;
-    _height = height;
+  static Future<UserModel?> getUserProfile() async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      final doc = await _firestore.collection('users').doc(currentUser.uid).get();
+      if (doc.exists) {
+        return UserModel.fromJson(doc.data()!);
+      }
+    }
+    return null;
   }
-
-  void setMedicalConditions(List<String> conditions) {
-    _medicalConditions = conditions;
+  
+  static Future<bool> hasCompletedOnboarding() async {
+    final user = await getUserProfile();
+    return user?.hasCompletedOnboarding ?? false;
   }
-
-  int get age {
-    if (_birthDate == null) return 0;
-    return DateTime.now().difference(_birthDate!).inDays ~/ 365;
-  }
-
-  void clearUserData() {
-    _userName = 'Usuario';
-    _userEmail = '';
-    _userPhone = '';
-    _birthDate = null;
-    _gender = 'Hombre';
-    _weight = 0;
-    _height = 0;
-    _medicalConditions = [];
+  
+  static Future<void> markOnboardingComplete() async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      try {
+        await _firestore.collection('users').doc(currentUser.uid).update({
+          'hasCompletedOnboarding': true,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+        print('Onboarding marked as complete for user: ${currentUser.uid}');
+      } catch (e) {
+        print('Error marking onboarding complete: $e');
+        // Intentar crear el documento si no existe
+        try {
+          await _firestore.collection('users').doc(currentUser.uid).set({
+            'uid': currentUser.uid,
+            'email': currentUser.email ?? '',
+            'name': currentUser.displayName ?? '',
+            'hasCompletedOnboarding': true,
+            'level': 1,
+            'plan': 'basic',
+            'tokenBalance': 0,
+            'kycVerified': false,
+            'facialRecognitionDone': true,
+            'language': 'es',
+            'createdAt': FieldValue.serverTimestamp(),
+            'lastActive': FieldValue.serverTimestamp(),
+            'connectedDevices': {},
+            'medicalConditions': [],
+          }, SetOptions(merge: true));
+          print('User document created with onboarding complete');
+        } catch (createError) {
+          print('Error creating user document: $createError');
+          rethrow;
+        }
+      }
+    } else {
+      throw Exception('No authenticated user found');
+    }
   }
 }

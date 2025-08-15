@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
-import '../../shared/services/mock_data_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../shared/models/user_model.dart';
 import '../../shared/services/user_service.dart';
-import '../onboarding/simple_welcome_screen.dart';
-import '../../shared/constants/app_icons.dart';
+import '../auth/google_auth_screen.dart';
 
 /// Pantalla de inicio con dashboard principal
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String language;
   
   const HomeScreen({
     super.key,
     required this.language,
   });
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  UserModel? _user;
+  bool _isLoading = true;
 
   final Map<String, Map<String, String>> _translations = const {
     'es': {
@@ -47,14 +55,125 @@ class HomeScreen extends StatelessWidget {
   };
 
   String _getText(String key) {
-    return _translations[language]?[key] ?? key;
+    return _translations[widget.language]?[key] ?? key;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      print('Loading user data...');
+      final user = await UserService.getUserProfile();
+      print('User data loaded: ${user?.name ?? 'null'}');
+      
+      if (mounted) {
+        setState(() {
+          _user = user;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+      
+      // Intentar crear un usuario básico si no existe
+      try {
+        final currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          print('Creating basic user profile...');
+          final basicUser = UserModel(
+            uid: currentUser.uid,
+            email: currentUser.email ?? '',
+            name: currentUser.displayName ?? 'Usuario',
+            level: 1,
+            plan: 'basic',
+            tokenBalance: 0,
+            kycVerified: false,
+            facialRecognitionDone: false,
+            language: widget.language,
+            createdAt: DateTime.now(),
+            lastActive: DateTime.now(),
+            connectedDevices: {},
+            hasCompletedOnboarding: true,
+          );
+          
+          await UserService.saveUserProfile(basicUser);
+          
+          if (mounted) {
+            setState(() {
+              _user = basicUser;
+              _isLoading = false;
+            });
+          }
+          return;
+        }
+      } catch (createError) {
+        print('Error creating basic user: $createError');
+      }
+      
+      if (mounted) {
+        setState(() {
+          _user = null;
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = MockDataService.currentUser;
-    final todayGoals = MockDataService.todayGoals;
-    
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Color(0xFF6B46C1),
+          ),
+        ),
+      );
+    }
+
+    if (_user == null) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                size: 64,
+                color: Colors.red,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'No se pudieron cargar los datos del usuario.',
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => _loadUserData(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF6B46C1),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Reintentar'),
+              ),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: () => _logout(context),
+                child: const Text('Volver a iniciar sesión'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       body: SafeArea(
@@ -68,13 +187,13 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: user.photoUrl != null 
-                        ? NetworkImage(user.photoUrl!)
+                    backgroundImage: _user!.photoUrl != null
+                        ? NetworkImage(_user!.photoUrl!)
                         : null,
                     backgroundColor: const Color(0xFF6B46C1),
-                    child: user.photoUrl == null 
+                    child: _user!.photoUrl == null
                         ? Text(
-                            user.name.substring(0, 1).toUpperCase(),
+                            (_user!.name.isNotEmpty ? _user!.name.substring(0, 1).toUpperCase() : 'U'),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -89,7 +208,7 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${_getText('welcome')} ${UserService().userName.split(' ')[0]}! 👋',
+                          '${_getText('welcome')} ${_user!.name.isNotEmpty ? _user!.name.split(' ')[0] : 'Usuario'}! 👋',
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -97,7 +216,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${_getText('level')} ${user.level} • ${user.plan.toUpperCase()}',
+                          '${_getText('level')} ${_user!.level} • ${_user!.plan.toUpperCase()}',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey.shade600,
@@ -108,7 +227,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () => _showLogoutDialog(context),
-                    icon: const Icon(AppIcons.logout, color: Colors.red),
+                    icon: const Icon(Icons.logout, color: Colors.red),
                     tooltip: 'Cerrar Sesión',
                   ),
                 ],
@@ -125,7 +244,6 @@ class HomeScreen extends StatelessWidget {
                   color: Color(0xFF1F2937),
                 ),
               ),
-              
               const SizedBox(height: 16),
               
               Row(
@@ -133,10 +251,10 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _buildProgressCard(
                       _getText('steps'),
-                      '${todayGoals.steps}',
-                      '${todayGoals.targetSteps}',
-                      todayGoals.steps / todayGoals.targetSteps,
-                      AppIcons.directionsWalk,
+                      '5420',
+                      '8000',
+                      0.68,
+                      Icons.directions_walk,
                       const Color(0xFF10B981),
                     ),
                   ),
@@ -144,10 +262,10 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _buildProgressCard(
                       _getText('tokens'),
-                      '${todayGoals.tokensEarned.toInt()}',
+                      '125',
                       '200',
-                      todayGoals.tokensEarned / 200,
-                      AppIcons.stars,
+                      0.63,
+                      Icons.stars,
                       const Color(0xFFF59E0B),
                     ),
                   ),
@@ -156,104 +274,49 @@ class HomeScreen extends StatelessWidget {
               
               const SizedBox(height: 30),
               
-              // Acciones rápidas
-              Text(
-                _getText('quickActions'),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
+              // Mensaje de bienvenida
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.celebration,
+                      size: 48,
+                      color: Color(0xFF6B46C1),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      '¡Bienvenido a Step Win!',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1F2937),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Tu viaje hacia una vida más saludable comienza aquí.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              
-              const SizedBox(height: 16),
-              
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildQuickAction(
-                      _getText('logSteps'),
-                      AppIcons.directionsWalk,
-                      const Color(0xFF10B981),
-                      () {},
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildQuickAction(
-                      _getText('logWater'),
-                      AppIcons.waterDrop,
-                      const Color(0xFF3B82F6),
-                      () {},
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 12),
-              
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildQuickAction(
-                      _getText('meditate'),
-                      AppIcons.selfImprovement,
-                      const Color(0xFF8B5CF6),
-                      () {},
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildQuickAction(
-                      _getText('chatCoach'),
-                      AppIcons.psychology,
-                      const Color(0xFF6B46C1),
-                      () {},
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 30),
-              
-              // Actividad reciente
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    _getText('recentActivity'),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F2937),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(_getText('viewAll')),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 16),
-              
-              // Feed de comunidad y logros del equipo
-              _buildCommunityFeed(),
-              
-              const SizedBox(height: 20),
-              
-              Text(
-                'Logros de Mi Equipo',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
-                ),
-              ),
-              
-              const SizedBox(height: 12),
-              
-              _buildTeamAchievements(),
             ],
           ),
         ),
@@ -326,282 +389,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickAction(
-    String title,
-    IconData icon,
-    Color color,
-    VoidCallback onTap,
-  ) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF374151),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActivityItem(
-    String title,
-    String time,
-    IconData icon,
-    Color color,
-  ) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, color: color, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF1F2937),
-                  ),
-                ),
-                Text(
-                  time,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-  
-  Widget _buildCommunityFeed() {
-    final feedItems = [
-      {
-        'user': 'María González',
-        'action': 'completó 12,000 pasos',
-        'time': '1h',
-        'avatar': 'M',
-        'color': const Color(0xFF10B981),
-      },
-      {
-        'user': 'Carlos Ruiz',
-        'action': 'alcanzó nivel 3',
-        'time': '3h',
-        'avatar': 'C',
-        'color': const Color(0xFF6B46C1),
-      },
-      {
-        'user': 'Ana López',
-        'action': 'ganó 50 tokens',
-        'time': '5h',
-        'avatar': 'A',
-        'color': const Color(0xFFF59E0B),
-      },
-    ];
-    
-    return Column(
-      children: feedItems.map((item) => Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: item['color'] as Color,
-              child: Text(
-                item['avatar'] as String,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF1F2937),
-                      ),
-                      children: [
-                        TextSpan(
-                          text: item['user'] as String,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: ' ${item['action']}'),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    item['time'] as String,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Icon(
-              AppIcons.favoriteOutline,
-              color: Colors.grey.shade400,
-              size: 20,
-            ),
-          ],
-        ),
-      )).toList(),
-    );
-  }
-  
-  Widget _buildTeamAchievements() {
-    final achievements = [
-      {
-        'title': 'Mi Líder: Roberto Silva',
-        'subtitle': 'Completó 15,000 pasos hoy',
-        'icon': AppIcons.emojiEvents,
-        'color': const Color(0xFFF59E0B),
-      },
-      {
-        'title': 'Equipo: +5 miembros activos',
-        'subtitle': 'Meta semanal alcanzada',
-        'icon': AppIcons.group,
-        'color': const Color(0xFF10B981),
-      },
-    ];
-    
-    return Column(
-      children: achievements.map((achievement) => Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: (achievement['color'] as Color).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                achievement['icon'] as IconData,
-                color: achievement['color'] as Color,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    achievement['title'] as String,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F2937),
-                    ),
-                  ),
-                  Text(
-                    achievement['subtitle'] as String,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      )).toList(),
-    );
-  }
-
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -629,14 +416,16 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void _logout(BuildContext context) {
-    UserService().clearUserData();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SimpleWelcomeScreen(),
-      ),
-      (route) => false,
-    );
+  Future<void> _logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const GoogleAuthScreen(),
+        ),
+        (route) => false,
+      );
+    }
   }
 }

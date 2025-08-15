@@ -1,79 +1,72 @@
-import '../models/fitness_profile_model.dart';
-
-class FitnessPlan {
-  final String planId;
-  final String userId;
-  final Map<String, dynamic> goals;
-  final List<String> recommendations;
-  final DateTime createdAt;
-
-  FitnessPlan({
-    required this.planId,
-    required this.userId,
-    required this.goals,
-    required this.recommendations,
-    required this.createdAt,
-  });
-}
-
-class FitnessPlanGenerator {
-  static FitnessPlan generatePersonalizedPlan(FitnessProfileModel profile) {
-    return FitnessPlan(
-      planId: 'plan_${DateTime.now().millisecondsSinceEpoch}',
-      userId: profile.userId,
-      goals: {
-        'steps': _calculateStepsGoal(profile),
-        'water': _calculateWaterGoal(profile),
-        'sleep': _calculateSleepGoal(profile),
-        'exercise': _calculateExerciseGoal(profile),
-      },
-      recommendations: _generateRecommendations(profile),
-      createdAt: DateTime.now(),
-    );
+class CoachAIService {
+  static String generateWelcomeWithPlan(dynamic plan) {
+    return '¡Hola! He creado un plan personalizado especialmente para ti. '
+           'Este plan se adapta a tu nivel de condición física y objetivos. '
+           'Recuerda que la constancia es clave para el éxito. ¡Vamos a comenzar!';
   }
-
-  static int _calculateStepsGoal(FitnessProfileModel profile) {
-    switch (profile.activityLevel) {
-      case 'sedentary':
-        return 6000;
-      case 'light':
-        return 8000;
-      case 'moderate':
-        return 10000;
-      case 'active':
-        return 12000;
-      default:
-        return 8000;
+  static Map<String, dynamic> generateFitnessPlan({
+    required int age,
+    required String fitnessLevel,
+    required List<String> goals,
+    required List<String> medicalConditions,
+  }) {
+    return {
+      'dailySteps': _calculateSteps(fitnessLevel),
+      'exercises': _generateExercises(fitnessLevel, goals),
+      'nutrition': _generateNutrition(age, goals),
+      'recovery': _generateRecovery(medicalConditions),
+      'duration': '4 semanas',
+    };
+  }
+  
+  static int _calculateSteps(String level) {
+    switch (level.toLowerCase()) {
+      case 'principiante': return 6000;
+      case 'intermedio': return 8000;
+      case 'avanzado': return 10000;
+      default: return 7000;
     }
   }
-
-  static int _calculateWaterGoal(FitnessProfileModel profile) {
-    return 8; // vasos por día
-  }
-
-  static double _calculateSleepGoal(FitnessProfileModel profile) {
-    return 8.0; // horas por día
-  }
-
-  static int _calculateExerciseGoal(FitnessProfileModel profile) {
-    return 30; // minutos por día
-  }
-
-  static List<String> _generateRecommendations(FitnessProfileModel profile) {
-    List<String> recommendations = [];
+  
+  static List<String> _generateExercises(String level, List<String> goals) {
+    List<String> exercises = ['Caminata diaria'];
     
-    if (profile.currentWaterGlasses < 6) {
-      recommendations.add('Aumenta tu consumo de agua gradualmente');
+    if (goals.contains('Perder peso')) {
+      exercises.add('Cardio 20 min');
+    }
+    if (goals.contains('Ganar músculo')) {
+      exercises.add('Ejercicios de fuerza');
+    }
+    if (level == 'avanzado') {
+      exercises.add('HIIT 2x semana');
     }
     
-    if (profile.currentSleepHours < 7) {
-      recommendations.add('Mejora tus hábitos de sueño');
+    return exercises;
+  }
+  
+  static List<String> _generateNutrition(int age, List<String> goals) {
+    List<String> nutrition = ['2 litros de agua diarios'];
+    
+    if (goals.contains('Perder peso')) {
+      nutrition.add('Déficit calórico moderado');
+    }
+    if (age > 40) {
+      nutrition.add('Suplemento de calcio');
     }
     
-    if (profile.screenTimeHours > 8) {
-      recommendations.add('Reduce el tiempo de pantalla');
+    return nutrition;
+  }
+  
+  static List<String> _generateRecovery(List<String> conditions) {
+    List<String> recovery = ['7-8 horas de sueño'];
+    
+    if (conditions.contains('Estrés')) {
+      recovery.add('Meditación 15 min');
+    }
+    if (conditions.contains('Dolor articular')) {
+      recovery.add('Estiramientos suaves');
     }
     
-    return recommendations;
+    return recovery;
   }
 }

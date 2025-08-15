@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../shared/models/user_model.dart';
 import 'coach_plan_screen.dart';
 import '../../shared/services/user_service.dart';
 
@@ -167,15 +168,25 @@ class _MedicalInfoScreenState extends State<MedicalInfoScreen> {
   }
 
   void _continueToCoachPlan() {
-    UserService().setMedicalConditions(_selectedConditions);
-    
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CoachPlanScreen(
-          medicalConditions: _selectedConditions,
+    _saveMedicalConditionsAndContinue();
+  }
+
+  Future<void> _saveMedicalConditionsAndContinue() async {
+    final user = await UserService.getUserProfile();
+    if (user != null) {
+      final updatedUser = user.copyWith(medicalConditions: _selectedConditions);
+      await UserService.saveUserProfile(updatedUser);
+    }
+
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CoachPlanScreen(
+            medicalConditions: _selectedConditions,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_constants.dart';
 import '../../shared/models/fitness_profile_model.dart';
 import '../../shared/services/coach_ai_service.dart';
-import '../coach/presentation/coach_plan_screen.dart';
+import 'coach_plan_screen.dart';
 
 /// Pantalla de evaluación física inicial
 class FitnessAssessmentScreen extends StatefulWidget {
@@ -247,7 +247,32 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
             'Cuéntame sobre tus hábitos diarios actuales.',
             style: TextStyle(color: Colors.grey, fontSize: 16),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade50,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.blue.shade200),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.blue.shade600, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Desliza las barras para ajustar cada valor según tus hábitos actuales',
+                    style: TextStyle(
+                      color: Colors.blue.shade700,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
           
           Text('📱 Tiempo de pantalla diario: ${_screenTimeHours}h'),
           Slider(
@@ -393,12 +418,10 @@ class _FitnessAssessmentScreenState extends State<FitnessAssessmentScreen> {
         createdAt: DateTime.now(),
       );
 
-      final plan = FitnessPlanGenerator.generatePersonalizedPlan(profile);
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => CoachPlanScreen(plan: plan),
+          builder: (context) => CoachPlanScreen(medicalConditions: _healthConditions),
         ),
       );
     });

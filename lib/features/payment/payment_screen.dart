@@ -122,7 +122,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
-                      builder: (context) => MainTabsScreen(language: widget.language),
+                      builder: (context) => const MainTabsScreen(),
                     ),
                     (route) => false,
                   );

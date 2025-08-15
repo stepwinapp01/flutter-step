@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../shared/services/mock_data_service.dart';
 import '../levels/level_congratulations_screen.dart';
-import '../../shared/constants/app_icons.dart';
+
 
 /// Pantalla de progreso y niveles
 class ProgressScreen extends StatefulWidget {
@@ -141,21 +141,21 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     _buildRequirement(
                       'Pasos mínimos diarios',
                       '${nextLevel['minSteps']}',
-                      AppIcons.directionsWalk,
+                      Icons.directions_walk,
                       const Color(0xFF10B981),
                     ),
                     const SizedBox(height: 8),
                     _buildRequirement(
                       'Tamaño del equipo',
                       '${nextLevel['teamSize']} miembros',
-                      AppIcons.group,
+                      Icons.group,
                       const Color(0xFF3B82F6),
                     ),
                     const SizedBox(height: 8),
                     _buildRequirement(
                       'Límite de retiro mensual',
                       '\$${nextLevel['withdrawLimit']}',
-                      AppIcons.accountBalanceWallet,
+                      Icons.account_balance_wallet,
                       const Color(0xFFF59E0B),
                     ),
                   ],
@@ -206,7 +206,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   child: _buildStatCard(
                     'Tokens Ganados',
                     '${user.tokenBalance.toInt()}',
-                    AppIcons.stars,
+                    Icons.stars,
                     const Color(0xFFF59E0B),
                   ),
                 ),
@@ -215,7 +215,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   child: _buildStatCard(
                     'Días Activos',
                     '28',
-                    AppIcons.calendarToday,
+                    Icons.calendar_today,
                     const Color(0xFF10B981),
                   ),
                 ),
@@ -230,7 +230,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   child: _buildStatCard(
                     'Pasos Totales',
                     '245K',
-                    AppIcons.directionsWalk,
+                    Icons.directions_walk,
                     const Color(0xFF3B82F6),
                   ),
                 ),
@@ -239,7 +239,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   child: _buildStatCard(
                     'Equipo',
                     '${user.teamCode != null ? "5" : "0"} miembros',
-                    AppIcons.group,
+                    Icons.group,
                     const Color(0xFF8B5CF6),
                   ),
                 ),
@@ -450,13 +450,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
             )
           else if (isUnlocked)
             const Icon(
-              AppIcons.checkCircle,
+              Icons.check_circle,
               color: Color(0xFF10B981),
               size: 20,
             )
           else
             Icon(
-              AppIcons.lock,
+              Icons.lock,
               color: Colors.grey.shade400,
               size: 20,
             ),

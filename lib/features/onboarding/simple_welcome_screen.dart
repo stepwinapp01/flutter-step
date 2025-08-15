@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'onboarding_flow.dart';
+import '../auth/google_auth_screen.dart';
+import 'phone_registration_screen.dart';
+import '../../shared/widgets/primary_button.dart';
 
 /// Pantalla de bienvenida ultra simple sin DropdownButton
 class SimpleWelcomeScreen extends StatefulWidget {
@@ -126,31 +128,16 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
               
               const SizedBox(height: 60),
               
-              // Botón continuar
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: () {
-                    OnboardingFlow.goToNameRegistration(context, selectedLanguage);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF6B46C1),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    selectedLanguage == 'es' ? 'Continuar' : 'Continue',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+              // Botón de acción
+              PrimaryButton(
+                text: selectedLanguage == 'es' ? 'Comenzar Onboarding' : 'Start Onboarding',
+                icon: const Icon(Icons.arrow_forward),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => PhoneRegistrationScreen(language: selectedLanguage),
+                  ));
+                },
               ),
-              
               const SizedBox(height: 20),
             ],
           ),

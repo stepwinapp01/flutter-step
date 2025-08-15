@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main_app/main_tabs_screen.dart';
+import '../../shared/services/user_service.dart';
 
 class FaceVerificationScreen extends StatefulWidget {
   const FaceVerificationScreen({super.key});
@@ -129,14 +130,54 @@ class _FaceVerificationScreenState extends State<FaceVerificationScreen> {
   void _startVerification() {
     setState(() => _isScanning = true);
     
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () async {
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainTabsScreen(language: 'es'),
-          ),
-        );
+        try {
+          // Marcar onboarding como completado
+          await UserService.markOnboardingComplete();
+          
+          // Verificar que se guardó correctamente
+          final isComplete = await UserService.hasCompletedOnboarding();
+          print('Onboarding completed: $isComplete');
+          
+          if (isComplete) {
+            // Navegar al dashboard principal
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainTabsScreen(),
+              ),
+              (route) => false,
+            );
+          } else {
+            throw Exception('No se pudo completar el onboarding');
+          }
+        } catch (e) {
+          print('Error completing onboarding: $e');
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error al completar el registro. Reintentando...'),
+                backgroundColor: Colors.orange,
+                action: SnackBarAction(
+                  label: 'Continuar',
+                  textColor: Colors.white,
+                  onPressed: () {
+                    // Forzar navegación al dashboard
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainTabsScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
+              ),
+            );
+            setState(() => _isScanning = false);
+          }
+        }
       }
     });
   }

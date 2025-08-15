@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:step_win_app/l10n/app_localizations.dart';
 import 'home_screen.dart';
 import 'goals_screen.dart';
 import 'rewards_screen.dart';
@@ -11,12 +12,7 @@ import 'settings_screen.dart';
 
 /// Pantalla principal con 6 tabs de navegación
 class MainTabsScreen extends StatefulWidget {
-  final String language;
-  
-  const MainTabsScreen({
-    super.key,
-    required this.language,
-  });
+  const MainTabsScreen({super.key});
 
   @override
   State<MainTabsScreen> createState() => _MainTabsScreenState();
@@ -25,44 +21,18 @@ class MainTabsScreen extends StatefulWidget {
 class _MainTabsScreenState extends State<MainTabsScreen> {
   int _currentIndex = 0;
 
-  final Map<String, Map<String, String>> _translations = {
-    'es': {
-      'home': 'Inicio',
-      'goals': 'Metas',
-      'rewards': 'Recompensas',
-      'progress': 'Progreso',
-      'community': 'Comunidad',
-      'wallet': 'Wallet',
-      'coach': 'Coach Adán',
-      'settings': 'Ajustes',
-    },
-    'en': {
-      'home': 'Home',
-      'goals': 'Goals',
-      'rewards': 'Rewards',
-      'progress': 'Progress',
-      'community': 'Community',
-      'wallet': 'Wallet',
-      'coach': 'Coach Adán',
-      'settings': 'Settings',
-    },
-  };
-
-  String _getText(String key) {
-    return _translations[widget.language]?[key] ?? key;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final screens = [
-      HomeScreen(language: widget.language),
-      GoalsScreen(language: widget.language),
-      RewardsScreen(language: widget.language),
-      ProgressScreen(language: widget.language),
+    final l10n = AppLocalizations.of(context);
+        final List<Widget> screens = [
+      HomeScreen(language: 'es'),
+      const GoalsScreen(language: 'es'),
+      const RewardsScreen(language: 'es'),
+      const ProgressScreen(language: 'es'),
       const CommunityScreen(),
-      WalletScreen(language: widget.language),
+      const WalletScreen(language: 'es'),
       const CoachAdanScreen(),
-      SettingsScreen(language: widget.language),
+      const SettingsScreen(language: 'es'),
     ];
 
     return Scaffold(
@@ -87,14 +57,14 @@ class _MainTabsScreenState extends State<MainTabsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: Row(
               children: [
-                _buildNavItem(0, Icons.home, _getText('home')),
-                _buildNavItem(1, Icons.track_changes, _getText('goals')),
-                _buildNavItem(2, Icons.stars, _getText('rewards')),
-                _buildNavItem(3, Icons.trending_up, _getText('progress')),
-                _buildNavItem(4, Icons.group, _getText('community')),
-                _buildNavItem(5, Icons.account_balance_wallet, _getText('wallet')),
-                _buildNavItem(6, Icons.psychology, _getText('coach')),
-                _buildNavItem(7, Icons.settings, _getText('settings')),
+                _buildNavItem(0, Icons.home, l10n.home),
+                _buildNavItem(1, Icons.track_changes, l10n.goals),
+                _buildNavItem(2, Icons.stars, l10n.rewards),
+                _buildNavItem(3, Icons.trending_up, l10n.progress),
+                _buildNavItem(4, Icons.group, l10n.community),
+                _buildNavItem(5, Icons.account_balance_wallet, 'Wallet'),
+                _buildNavItem(6, Icons.psychology, l10n.coach),
+                _buildNavItem(7, Icons.settings, 'Settings'),
               ],
             ),
           ),
@@ -116,7 +86,7 @@ class _MainTabsScreenState extends State<MainTabsScreen> {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         decoration: BoxDecoration(
           color: isSelected 
-              ? const Color(0xFF6B46C1).withOpacity(0.1)
+              ? const Color(0xFF6B46C1).withAlpha(26)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),

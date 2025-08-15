@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../shared/services/mock_data_service.dart';
-import '../../shared/constants/app_icons.dart';
 
 /// Pantalla de recompensas y tokens
 class RewardsScreen extends StatelessWidget {
@@ -13,8 +11,11 @@ class RewardsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = MockDataService.currentUser;
-    final withdrawalHistory = MockDataService.withdrawalHistory;
+    const tokenBalance = 1247.50;
+    final withdrawalHistory = [
+      {'amount': 100.0, 'currency': 'USDT', 'status': 'completed', 'date': DateTime.now().subtract(const Duration(days: 1))},
+      {'amount': 50.0, 'currency': 'USDC', 'status': 'pending', 'date': DateTime.now().subtract(const Duration(days: 3))},
+    ];
     
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
@@ -50,7 +51,7 @@ class RewardsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Icon(
-                    AppIcons.stars,
+                    Icons.stars,
                     color: Colors.white,
                     size: 48,
                   ),
@@ -64,7 +65,7 @@ class RewardsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${user.tokenBalance.toStringAsFixed(2)} SWT',
+                    '${tokenBalance.toStringAsFixed(2)} SWT',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 36,
@@ -73,7 +74,7 @@ class RewardsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '≈ \$${(user.tokenBalance * 0.1).toStringAsFixed(2)} USD',
+                    '≈ \$${(tokenBalance * 0.1).toStringAsFixed(2)} USD',
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 14,
@@ -91,7 +92,7 @@ class RewardsScreen extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     'Retirar',
-                    AppIcons.accountBalanceWallet,
+                    Icons.account_balance_wallet,
                     const Color(0xFF10B981),
                     () {},
                   ),
@@ -100,7 +101,7 @@ class RewardsScreen extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     'Historial',
-                    AppIcons.history,
+                    Icons.history,
                     const Color(0xFF3B82F6),
                     () {},
                   ),
@@ -124,9 +125,9 @@ class RewardsScreen extends StatelessWidget {
             
             ...withdrawalHistory.map((withdrawal) => _buildWithdrawalItem(
               withdrawal['amount'].toString(),
-              withdrawal['currency'],
-              withdrawal['status'],
-              withdrawal['date'],
+              withdrawal['currency'] as String,
+              withdrawal['status'] as String,
+              withdrawal['date'] as DateTime,
             )),
             
             const SizedBox(height: 30),
@@ -146,31 +147,31 @@ class RewardsScreen extends StatelessWidget {
             _buildEarnTokenItem(
               'Caminar 1,000 pasos',
               '10 tokens',
-              AppIcons.directionsWalk,
+              Icons.directions_walk,
               const Color(0xFF10B981),
             ),
             _buildEarnTokenItem(
               'Dormir 7+ horas',
               '50 tokens',
-              AppIcons.bedtime,
+              Icons.bedtime,
               const Color(0xFF3B82F6),
             ),
             _buildEarnTokenItem(
               'Beber 2L de agua',
               '30 tokens',
-              AppIcons.waterDrop,
+              Icons.water_drop,
               const Color(0xFF06B6D4),
             ),
             _buildEarnTokenItem(
               'Meditar 10 minutos',
               '40 tokens',
-              AppIcons.selfImprovement,
+              Icons.self_improvement,
               const Color(0xFF8B5CF6),
             ),
             _buildEarnTokenItem(
               'Chat con Coach Adán',
               '60 tokens',
-              AppIcons.psychology,
+              Icons.psychology,
               const Color(0xFF6B46C1),
             ),
           ],
@@ -273,7 +274,7 @@ class RewardsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
-              AppIcons.accountBalanceWallet,
+              Icons.account_balance_wallet,
               color: statusColor,
               size: 20,
             ),

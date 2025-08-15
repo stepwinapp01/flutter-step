@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../shared/constants/app_icons.dart';
+
 
 /// Pantalla de Wallet con gestión de tokens y retiros
 class WalletScreen extends StatefulWidget {
@@ -30,6 +30,7 @@ class _WalletScreenState extends State<WalletScreen> {
       'swt': 'SWT Tokens',
       'usdt': 'USDT',
       'usdc': 'USDC',
+      'exchange': 'Cambiar Tokens',
     },
     'en': {
       'title': 'My Wallet',
@@ -45,6 +46,7 @@ class _WalletScreenState extends State<WalletScreen> {
       'swt': 'SWT Tokens',
       'usdt': 'USDT',
       'usdc': 'USDC',
+      'exchange': 'Exchange Tokens',
     },
   };
 
@@ -139,21 +141,21 @@ class _WalletScreenState extends State<WalletScreen> {
                 child: _buildBalanceItem(
                   _getText('available'),
                   '\$847.50',
-                  AppIcons.accountBalanceWallet,
+                  Icons.account_balance_wallet,
                 ),
               ),
               Expanded(
                 child: _buildBalanceItem(
                   _getText('staking'),
                   '\$350.00',
-                  AppIcons.trendingUp,
+                  Icons.trending_up,
                 ),
               ),
               Expanded(
                 child: _buildBalanceItem(
                   _getText('pending'),
                   '\$50.00',
-                  AppIcons.schedule,
+                  Icons.schedule,
                 ),
               ),
             ],
@@ -272,7 +274,7 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
           ),
           Icon(
-            AppIcons.chevronRight,
+            Icons.chevron_right,
             color: Colors.grey.shade400,
           ),
         ],
@@ -286,12 +288,12 @@ class _WalletScreenState extends State<WalletScreen> {
         Expanded(
           child: ElevatedButton.icon(
             onPressed: () {
-              // TODO: Implementar retiro
+              _showExchangeDialog();
             },
-            icon: const Icon(AppIcons.arrowUpward),
-            label: Text(_getText('withdraw')),
+            icon: const Icon(Icons.swap_horiz),
+            label: Text(_getText('exchange')),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF6B46C1),
+              backgroundColor: const Color(0xFF10B981),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
@@ -304,17 +306,16 @@ class _WalletScreenState extends State<WalletScreen> {
         Expanded(
           child: ElevatedButton.icon(
             onPressed: () {
-              // TODO: Implementar depósito
+              // TODO: Implementar retiro
             },
-            icon: const Icon(AppIcons.arrowDownward),
-            label: Text(_getText('deposit')),
+            icon: const Icon(Icons.arrow_upward),
+            label: Text(_getText('withdraw')),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: const Color(0xFF6B46C1),
+              backgroundColor: const Color(0xFF6B46C1),
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFF6B46C1)),
               ),
             ),
           ),
@@ -365,7 +366,7 @@ class _WalletScreenState extends State<WalletScreen> {
         child: Column(
           children: [
             Icon(
-              AppIcons.receiptLong,
+              Icons.receipt_long,
               size: 48,
               color: Colors.grey.shade400,
             ),
@@ -393,19 +394,19 @@ class _WalletScreenState extends State<WalletScreen> {
     
     switch (transaction['type']) {
       case 'reward':
-        icon = AppIcons.stars;
+        icon = Icons.stars;
         color = const Color(0xFF10B981);
         break;
       case 'staking':
-        icon = AppIcons.trendingUp;
+        icon = Icons.trending_up;
         color = const Color(0xFF3B82F6);
         break;
       case 'withdraw':
-        icon = AppIcons.arrowUpward;
+        icon = Icons.arrow_upward;
         color = const Color(0xFFEF4444);
         break;
       default:
-        icon = AppIcons.swapHoriz;
+        icon = Icons.swap_horiz;
         color = Colors.grey;
     }
 
@@ -463,6 +464,49 @@ class _WalletScreenState extends State<WalletScreen> {
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showExchangeDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(_getText('exchange')),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Cambiar SWT Tokens por USDT/USDC'),
+            const SizedBox(height: 16),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Cantidad SWT',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Intercambio procesado')),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF10B981),
+            ),
+            child: const Text('Cambiar'),
           ),
         ],
       ),

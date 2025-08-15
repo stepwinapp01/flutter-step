@@ -192,7 +192,7 @@ class CoachPlanScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => const MainTabsScreen(language: 'es')),
+                    MaterialPageRoute(builder: (_) => const MainTabsScreen()),
                     (route) => false,
                   ),
                   style: ElevatedButton.styleFrom(

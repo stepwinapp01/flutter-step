@@ -3,37 +3,31 @@ import '../models/chat_message.dart';
 
 class ChatProvider extends ChangeNotifier {
   final List<ChatMessage> _messages = [
-    ChatMessage(
+    ChatMessage.coach(
       message: '¡Hola! Soy Coach Adán, tu entrenador personal. ¿En qué puedo ayudarte hoy?',
-      isCoach: true,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
     ),
   ];
 
   List<ChatMessage> get messages => _messages;
 
-  void sendUserMessage(String message) {
-    _messages.add(ChatMessage(
-      message: message,
-      isCoach: false,
-      timestamp: DateTime.now(),
-    ));
+  void addMessage(ChatMessage message) {
+    _messages.add(message);
     notifyListeners();
-
-    // Simular respuesta del coach
-    Future.delayed(const Duration(seconds: 2), () {
-      _sendCoachResponse(message);
-    });
+    
+    if (message.sender == Sender.user) {
+      Future.delayed(const Duration(seconds: 2), () {
+        _sendCoachResponse(message.message);
+      });
+    }
+  }
+  
+  void sendUserMessage(String message) {
+    addMessage(ChatMessage.user(message: message));
   }
 
   void _sendCoachResponse(String userMessage) {
     String response = _generateResponse(userMessage);
-    _messages.add(ChatMessage(
-      message: response,
-      isCoach: true,
-      timestamp: DateTime.now(),
-    ));
-    notifyListeners();
+    addMessage(ChatMessage.coach(message: response));
   }
 
   String _generateResponse(String userMessage) {

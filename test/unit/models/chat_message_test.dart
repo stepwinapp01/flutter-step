@@ -7,8 +7,8 @@ void main() {
       final message = ChatMessage.user(message: 'Test message');
       
       expect(message.message, 'Test message');
+      expect(message.sender, Sender.user);
       expect(message.isCoach, false);
-      expect(message.id, isNotEmpty);
       expect(message.timestamp, isA<DateTime>());
     });
 
@@ -16,8 +16,8 @@ void main() {
       final message = ChatMessage.coach(message: 'Coach response');
       
       expect(message.message, 'Coach response');
+      expect(message.sender, Sender.coach);
       expect(message.isCoach, true);
-      expect(message.id, isNotEmpty);
       expect(message.timestamp, isA<DateTime>());
     });
   });

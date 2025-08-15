@@ -15,6 +15,9 @@ class UserModel {
   
   /// Nombre completo del usuario
   final String name;
+
+  /// Número de teléfono del usuario
+  final String? phone;
   
   /// URL de la foto de perfil (opcional)
   final String? photoUrl;
@@ -48,11 +51,21 @@ class UserModel {
   
   /// Dispositivos conectados (smartwatch, fitness tracker, etc.)
   final Map<String, bool> connectedDevices;
+  
+  /// Indica si el usuario ha completado el proceso de onboarding
+  final bool hasCompletedOnboarding;
+
+  /// Condiciones médicas del usuario
+  final List<String> medicalConditions;
+
+  /// Género del usuario: 'male', 'female'
+  final String? gender;
 
   const UserModel({
     required this.uid,
     required this.email,
     required this.name,
+    this.phone,
     this.photoUrl,
     required this.level,
     required this.plan,
@@ -64,6 +77,9 @@ class UserModel {
     required this.lastActive,
     this.teamCode,
     required this.connectedDevices,
+    required this.hasCompletedOnboarding,
+    this.medicalConditions = const [],
+    this.gender,
   });
 
   /// Crea una instancia de UserModel desde un Map JSON
@@ -75,6 +91,7 @@ class UserModel {
       uid: json['uid'] ?? '',
       email: json['email'] ?? '',
       name: json['name'] ?? '',
+      phone: json['phone'],
       photoUrl: json['photoUrl'],
       level: json['level'] ?? 1,
       plan: json['plan'] ?? 'basic',
@@ -82,10 +99,13 @@ class UserModel {
       kycVerified: json['kycVerified'] ?? false,
       facialRecognitionDone: json['facialRecognitionDone'] ?? false,
       language: json['language'] ?? 'es',
-      createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
-      lastActive: DateTime.parse(json['lastActive'] ?? DateTime.now().toIso8601String()),
+      createdAt: _parseDateTime(json['createdAt']),
+      lastActive: _parseDateTime(json['lastActive']),
       teamCode: json['teamCode'],
       connectedDevices: Map<String, bool>.from(json['connectedDevices'] ?? {}),
+      hasCompletedOnboarding: json['hasCompletedOnboarding'] ?? false,
+      medicalConditions: List<String>.from(json['medicalConditions'] ?? []),
+      gender: json['gender'],
     );
   }
 
@@ -97,6 +117,7 @@ class UserModel {
       'uid': uid,
       'email': email,
       'name': name,
+      'phone': phone,
       'photoUrl': photoUrl,
       'level': level,
       'plan': plan,
@@ -108,6 +129,9 @@ class UserModel {
       'lastActive': lastActive.toIso8601String(),
       'teamCode': teamCode,
       'connectedDevices': connectedDevices,
+      'hasCompletedOnboarding': hasCompletedOnboarding,
+      'medicalConditions': medicalConditions,
+      'gender': gender,
     };
   }
 
@@ -119,6 +143,7 @@ class UserModel {
     String? uid,
     String? email,
     String? name,
+    String? phone,
     String? photoUrl,
     int? level,
     String? plan,
@@ -130,11 +155,15 @@ class UserModel {
     DateTime? lastActive,
     String? teamCode,
     Map<String, bool>? connectedDevices,
+    bool? hasCompletedOnboarding,
+    List<String>? medicalConditions,
+    String? gender,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
       name: name ?? this.name,
+      phone: phone ?? this.phone,
       photoUrl: photoUrl ?? this.photoUrl,
       level: level ?? this.level,
       plan: plan ?? this.plan,
@@ -146,6 +175,21 @@ class UserModel {
       lastActive: lastActive ?? this.lastActive,
       teamCode: teamCode ?? this.teamCode,
       connectedDevices: connectedDevices ?? this.connectedDevices,
+      hasCompletedOnboarding: hasCompletedOnboarding ?? this.hasCompletedOnboarding,
+      medicalConditions: medicalConditions ?? this.medicalConditions,
+      gender: gender ?? this.gender,
     );
+  }
+  
+  /// Helper method to parse DateTime from various formats
+  static DateTime _parseDateTime(dynamic value) {
+    if (value == null) return DateTime.now();
+    if (value is DateTime) return value;
+    if (value is String) return DateTime.parse(value);
+    // Handle Firestore Timestamp
+    if (value.runtimeType.toString() == 'Timestamp') {
+      return (value as dynamic).toDate();
+    }
+    return DateTime.now();
   }
 }

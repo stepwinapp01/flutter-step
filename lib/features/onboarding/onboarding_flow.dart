@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'simple_welcome_screen.dart';
-import 'name_registration_screen.dart';
+import 'phone_registration_screen.dart';
 import 'age_verification_screen.dart';
 import 'fitness_assessment_screen.dart';
 import 'medical_info_screen.dart';
@@ -16,7 +16,7 @@ import '../main_app/main_tabs_screen.dart';
 /// 
 /// Flujo completo:
 /// 1. SimpleWelcomeScreen - Bienvenida y selección de idioma
-/// 2. NameRegistrationScreen - Registro de nombre
+/// 2. PhoneRegistrationScreen - Registro de nombre y teléfono con SMS
 /// 3. AgeVerificationScreen - Verificación de edad (16+)
 /// 4. FitnessAssessmentScreen - Evaluación física completa
 /// 5. MedicalInfoScreen - Información médica
@@ -36,10 +36,10 @@ class OnboardingFlow {
     );
   }
 
-  static void goToNameRegistration(BuildContext context, String language) {
+  static void goToPhoneRegistration(BuildContext context, String language) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => NameRegistrationScreen(language: language),
+        builder: (context) => PhoneRegistrationScreen(language: language),
       ),
     );
   }
@@ -119,7 +119,7 @@ class OnboardingFlow {
   static void completeOnboarding(BuildContext context, {String language = 'es'}) {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => MainTabsScreen(language: language),
+        builder: (context) => const MainTabsScreen(),
       ),
       (route) => false,
     );
