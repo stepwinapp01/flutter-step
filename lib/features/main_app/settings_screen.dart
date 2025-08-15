@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../levels/levels_system_screen.dart';
 import '../../shared/constants/app_icons.dart';
+import '../../shared/services/user_service.dart';
+import '../../shared/models/user_model.dart';
 
 /// Pantalla de configuración con todas las opciones
 class SettingsScreen extends StatefulWidget {
@@ -19,6 +22,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool isDarkMode = false;
   bool biometricAuth = false;
   bool notifications = true;
+  UserModel? _user;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final user = await UserService.getUserProfile();
+      if (mounted) {
+        setState(() {
+          _user = user;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _user = null;
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,27 +248,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildProfileTile() {
+    if (_isLoading) {
+      return const ListTile(
+        leading: CircularProgressIndicator(),
+        title: Text('Cargando...'),
+      );
+    }
+
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final userName = _user?.name ?? currentUser?.displayName ?? 'Usuario';
+    final userEmail = _user?.email ?? currentUser?.email ?? 'Sin email';
+    final userInitial = userName.isNotEmpty ? userName.substring(0, 1).toUpperCase() : 'U';
+
     return ListTile(
-      leading: const CircleAvatar(
+      leading: CircleAvatar(
         radius: 25,
-        backgroundColor: Color(0xFF6B46C1),
-        child: Text(
-          'U',
-          style: TextStyle(
+        backgroundImage: currentUser?.photoURL != null ? NetworkImage(currentUser!.photoURL!) : null,
+        backgroundColor: const Color(0xFF6B46C1),
+        child: currentUser?.photoURL == null ? Text(
+          userInitial,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-        ),
+        ) : null,
       ),
-      title: const Text(
-        'Usuario Demo',
-        style: TextStyle(
+      title: Text(
+        userName,
+        style: const TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 16,
         ),
       ),
-      subtitle: const Text('usuario@stepwin.com'),
+      subtitle: Text(userEmail),
       trailing: const Icon(AppIcons.chevronRight),
       onTap: () => _showEditProfile(),
     );
