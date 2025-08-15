@@ -120,10 +120,10 @@ class _SimpleWelcomeScreenState extends State<SimpleWelcomeScreen> {
               // Características
               Column(
                 children: [
-                  _buildFeature(HugeIcons.strokeRoundedWalk, selectedLanguage == 'es' ? 'Gana tokens por cada paso' : 'Earn tokens for every step'),
-                  _buildFeature(HugeIcons.strokeRoundedMoney04, selectedLanguage == 'es' ? 'Retira dinero real (USDT/USDC)' : 'Withdraw real money (USDT/USDC)'),
-                  _buildFeature(HugeIcons.strokeRoundedAiRobot, selectedLanguage == 'es' ? 'Coach IA personalizado' : 'Personalized AI Coach'),
-                  _buildFeature(HugeIcons.strokeRoundedUserGroup, selectedLanguage == 'es' ? 'Comunidad motivadora' : 'Motivating community'),
+                  _buildFeature(HugeIcons.strokeRoundedWalkingMan, selectedLanguage == 'es' ? 'Gana tokens por cada paso' : 'Earn tokens for every step'),
+                  _buildFeature(HugeIcons.strokeRoundedMoney01, selectedLanguage == 'es' ? 'Retira dinero real (USDT/USDC)' : 'Withdraw real money (USDT/USDC)'),
+                  _buildFeature(HugeIcons.strokeRoundedAiChat01, selectedLanguage == 'es' ? 'Coach IA personalizado' : 'Personalized AI Coach'),
+                  _buildFeature(HugeIcons.strokeRoundedUsers, selectedLanguage == 'es' ? 'Comunidad motivadora' : 'Motivating community'),
                 ],
               ),
               

@@ -79,7 +79,7 @@ class _FaceVerificationScreenState extends State<FaceVerificationScreen> {
                           ],
                         )
                       : Icon(
-                          HugeIcons.strokeRoundedFaceId,
+                          HugeIcons.strokeRoundedFaceRecognition,
                           size: 120,
                           color: Colors.white.withOpacity(0.7),
                         ),

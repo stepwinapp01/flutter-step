@@ -160,7 +160,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                   labelText: _getText('fullName'),
-                  prefixIcon: const Icon(HugeIcons.strokeRoundedUser),
+                  prefixIcon: const Icon(HugeIcons.strokeRoundedUser01),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -210,7 +210,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              HugeIcons.strokeRoundedMale,
+                              HugeIcons.strokeRoundedMale01,
                               color: _selectedGender == 'male' 
                                   ? const Color(0xFF6B46C1) 
                                   : Colors.grey.shade600,
@@ -254,7 +254,7 @@ class _PhoneRegistrationScreenState extends State<PhoneRegistrationScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              HugeIcons.strokeRoundedFemale,
+                              HugeIcons.strokeRoundedFemale01,
                               color: _selectedGender == 'female' 
                                   ? const Color(0xFF6B46C1) 
                                   : Colors.grey.shade600,

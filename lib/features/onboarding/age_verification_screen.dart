@@ -148,7 +148,7 @@ class _AgeVerificationScreenState extends State<AgeVerificationScreen> {
                   ),
                   child: Row(
                     children: [
-                      Icon(HugeIcons.strokeRoundedCalendar03, color: Colors.grey.shade600),
+                      Icon(HugeIcons.strokeRoundedCalendar01, color: Colors.grey.shade600),
                       const SizedBox(width: 12),
                       Text(
                         selectedDate != null
