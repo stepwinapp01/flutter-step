@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'onboarding_flow.dart';
 
 /// Pantalla de verificación de edad (16+ años requerido)
@@ -148,7 +147,7 @@ class _AgeVerificationScreenState extends State<AgeVerificationScreen> {
                   ),
                   child: Row(
                     children: [
-                      Icon(HugeIcons.strokeRoundedCalendar01, color: Colors.grey.shade600),
+                      Icon(Icons.calendar_today, color: Colors.grey.shade600),
                       const SizedBox(width: 12),
                       Text(
                         selectedDate != null
